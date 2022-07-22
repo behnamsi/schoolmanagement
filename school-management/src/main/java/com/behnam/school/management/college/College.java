@@ -13,14 +13,9 @@ import java.util.List;
 public class College {
 
     @Id
-    @SequenceGenerator(
-            name = "college_sequence",
-            sequenceName = "college_sequence",
-            allocationSize = 1
-    )
+
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "college_sequence"
+            strategy = GenerationType.IDENTITY
     )
     @Column(updatable = false)
     private Long collegeId;
@@ -37,18 +32,6 @@ public class College {
     private List<Course> coursesInCollege;
 
     public College() {
-    }
-
-    public College(String collegeName) {
-        this.collegeName = collegeName;
-    }
-
-    public College(String collegeName, List<Student> studentsInCollege,
-                   List<Professor> professorsInCollege, List<Course> coursesInCollege) {
-        this.collegeName = collegeName;
-        this.studentsInCollege = studentsInCollege;
-        this.professorsInCollege = professorsInCollege;
-        this.coursesInCollege = coursesInCollege;
     }
 
     public Long getCollegeId() {

@@ -13,14 +13,9 @@ import java.util.List;
 public class Professor {
 
     @Id
-    @SequenceGenerator(
-            name = "professor_sequence",
-            sequenceName = "professor_sequence",
-            allocationSize = 1
-    )
+
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "professor_sequence"
+            strategy = GenerationType.IDENTITY
     )
     @Column(updatable = false)
     private Long professorId;
@@ -33,12 +28,17 @@ public class Professor {
     @Column(nullable = false, unique = true)
     private Long nationalId;
 
+
+    @OneToMany(
+            mappedBy = "professor",
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY)
     @JsonIgnore
-    @OneToMany(mappedBy = "professor",cascade = CascadeType.ALL)
     private List<Course> courses;
 
     @ManyToOne(
-            cascade = CascadeType.MERGE
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "college_id",
@@ -47,20 +47,13 @@ public class Professor {
     @JsonIgnore
     private College professorCollege;
 
-    @ManyToMany(mappedBy = "professorsOfStudent")
+    @ManyToMany(mappedBy = "professorsOfStudent",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.MERGE)
     @JsonIgnore
     private List<Student> studentsOfProfessor;
-    public Professor() {
-    }
 
-    public Professor(String firstName, String lastName, Long personalId, Long nationalId, List<Course> courses, College professorCollege, List<Student> studentsOfProfessor) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.personalId = personalId;
-        this.nationalId = nationalId;
-        this.courses = courses;
-        this.professorCollege = professorCollege;
-        this.studentsOfProfessor = studentsOfProfessor;
+    public Professor() {
     }
 
     public Long getProfessorId() {

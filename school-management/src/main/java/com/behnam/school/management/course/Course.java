@@ -12,14 +12,9 @@ import java.util.List;
 @Table
 public class Course {
     @Id
-    @SequenceGenerator(
-            name = "course_sequence",
-            sequenceName = "course_sequence",
-            allocationSize = 1
-    )
+
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "course_sequence"
+            strategy = GenerationType.IDENTITY
     )
     @Column(updatable = false)
     private Long courseId;
@@ -31,7 +26,8 @@ public class Course {
 
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            optional = false
+            optional = false,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "professor_id",
@@ -43,7 +39,8 @@ public class Course {
 
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            optional = false
+            optional = false,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "college_id",
@@ -52,22 +49,15 @@ public class Course {
     @JsonIgnore
     private College courseCollege;
 
-    @ManyToMany(mappedBy = "studentCourses", cascade = CascadeType.MERGE)
+    @ManyToMany(
+            mappedBy = "studentCourses",
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Student> enrolled_students;
 
     public Course() {
     }
-
-    public Course(String courseName, Integer unitNumber, Professor professor, College courseCollege, List<Student> enrolled_students) {
-        this.courseName = courseName;
-        this.unitNumber = unitNumber;
-        this.professor = professor;
-        this.courseCollege = courseCollege;
-        this.enrolled_students = enrolled_students;
-    }
-
-
 
     public Long getCourseId() {
         return courseId;

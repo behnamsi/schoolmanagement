@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(path = "api/student/")
+@RequestMapping(path = "api/students/")
 public class StudentController {
     private final StudentService service;
 
@@ -23,13 +23,13 @@ public class StudentController {
     // GET methods
 
     // get the all of students
-    @GetMapping("all/")
+    @GetMapping
     public List<Student> getAllStudents() {
         return service.getAllStudents();
     }
 
     //get student courses using university id
-    @GetMapping(path = "courses/{uniID}")
+    @GetMapping(path = "{uniID}/courses")
     public List<String> getStudentCourses(
             @PathVariable("uniID") Long uniID
     ) {
@@ -37,14 +37,14 @@ public class StudentController {
     }
 
     // get student averages
-    @GetMapping(path = "get-avg/{uniID}")
+    @GetMapping(path = "{uniID}/get-average")
     public Double getStudentAverage(@PathVariable("uniID") Long uniID) {
         return service.getStudentAverage(uniID);
     }
 
 
     //POST methods
-    @PostMapping(path = "add/")
+    @PostMapping(path = "add")
     public void addStudent(
             @RequestBody Student student,
             @RequestParam Long collegeId
@@ -53,14 +53,14 @@ public class StudentController {
     }
 
 
-    @DeleteMapping(path = "delete/{id}")
+    @DeleteMapping(path = "{id}/delete")
     public void deleteStudent(
             @PathVariable("id") Long id
     ) {
         service.deleteStudent(id);
     }
 
-    @DeleteMapping(path = "delete/uni-id/{uniId}")
+    @DeleteMapping(path = "{uniId}/delete-with-uni-id/")
     public void deleteStudentByUniId(
             @PathVariable("uniId") Long uniId
     ) {
@@ -69,7 +69,7 @@ public class StudentController {
     }
 
     // update with university id
-    @PutMapping(path = "update/{uniId}")
+    @PutMapping(path = "{uniId}/update")
     public void updateStudent(
             @PathVariable("uniId") Long uniId,
             @RequestParam(required = false) String first_name,
@@ -82,7 +82,7 @@ public class StudentController {
     }
 
     // add course for student
-    @PutMapping(path = "add/score/{uniId}/{courseName}")
+    @PutMapping(path = "{uniId}/add-score/{courseName}")
     public void addScoreCourse(
             @PathVariable("uniId") Long uniId,
             @PathVariable("courseName") String courseName,

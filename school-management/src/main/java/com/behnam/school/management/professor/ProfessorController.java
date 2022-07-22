@@ -9,7 +9,7 @@ import javax.sound.sampled.Port;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/professor/")
+@RequestMapping("api/professors/")
 public class ProfessorController {
 
     private final ProfessorService service;
@@ -25,13 +25,13 @@ public class ProfessorController {
     // GET methods:
 
     //get All Professors
-    @GetMapping(path = "all/")
+    @GetMapping
     public List<Professor> getAllProfessors() {
         return service.getAllProfessors();
     }
 
     // get all students that belong to a professor
-    @GetMapping(path = "get-students/{professorId}")
+    @GetMapping(path = "{professorId}/get-students")
     public List<String> getProfessorStudents(
             @PathVariable("professorId") Long professorId
     ) {
@@ -39,7 +39,7 @@ public class ProfessorController {
     }
 
     // get all students averages that belong to a professor
-    @GetMapping(path = "get-students/avg/{professorId}")
+    @GetMapping(path = "{professorId}/get-students/avg")
     public List<String> getProfessorStudentsAverages(
             @PathVariable("professorId") Long professorId
     ) {
@@ -47,21 +47,21 @@ public class ProfessorController {
     }
 
     // get courses of a professor
-    @GetMapping(path = "course/{professorId}")
+    @GetMapping(path = "{professorId}/course")
     public List<String> getProfessorsCourses(
             @PathVariable("professorId") Long professorId
     ) {
         return service.getProfessorsCourses(professorId);
     }
     // get students of a course of professor
-    @GetMapping(path = "get-students-of-a-course/{courseName}/{professorId}")
+    @GetMapping(path = "{professorId}/get-students-of-a-course/{courseName}")
     public List<String> getProfessorStudentsByCourse(
             @PathVariable("courseName") String courseName,
             @PathVariable("professorId") Long professorId
     ){
         return service.getProfessorStudentsByCourse(professorId,courseName);
     }
-    @GetMapping(path = "get-students-of-a-course/avg/{courseName}/{professorId}")
+    @GetMapping(path = "{professorId}/get-students-of-a-course/avg/{courseName}")
     public List<String> getProfessorStudentsAverageByCourse(
             @PathVariable("courseName") String courseName,
             @PathVariable("professorId") Long professorId
@@ -80,14 +80,14 @@ public class ProfessorController {
         service.addProfessor(professor, collegeId);
     }
 
-    @DeleteMapping(path = "delete/{profId}")
+    @DeleteMapping(path = "{profId}/delete")
     public void deleteProfessor(
             @PathVariable("profId") Long id
     ) {
         service.deleteProfessor(id);
     }
 
-    @PutMapping(path = "update/{profId}")
+    @PutMapping(path = "{profId}/update")
     public void updateProfessor(
             @PathVariable("profId") Long id,
             @RequestParam(required = false) String first_name,

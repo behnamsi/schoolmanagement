@@ -15,14 +15,9 @@ import java.util.Map;
 @Table()
 public class Student {
     @Id
-    @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
-            allocationSize = 1
-    )
+
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
+            strategy = GenerationType.IDENTITY
     )
     @Column(updatable = false)
     private Long studentId;
@@ -37,7 +32,8 @@ public class Student {
 
     // studentCollege
     @ManyToOne(
-            cascade = CascadeType.MERGE
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "college_id",
@@ -48,7 +44,8 @@ public class Student {
 
     // studentCourses
     @ManyToMany(
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY
     )
     @JoinTable(
             name = "student_courses",
@@ -62,7 +59,8 @@ public class Student {
 
     // professorsOfStudent
     @ManyToMany(
-            cascade = CascadeType.PERSIST
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY
     )
     @JoinTable(
             name = "student_professor",
