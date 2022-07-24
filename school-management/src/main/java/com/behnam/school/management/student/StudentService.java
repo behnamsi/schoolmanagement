@@ -22,8 +22,6 @@ public class StudentService {
     private final StudentRepository repository;
     private final CollegeRepository collegeRepository;
     private final CourseRepository courseRepository;
-    private final int LIMIT_PER_PAGE = 5;
-    private final int WITCH_PAGE = 0;
 
     @Autowired
     public StudentService(StudentRepository repository, CollegeRepository collegeRepository, CourseRepository courseRepository) {
@@ -33,8 +31,9 @@ public class StudentService {
     }
 
     public List<Student> getAllStudents(Integer limit, Integer page) {
-        if (limit == null) limit = LIMIT_PER_PAGE;
-        if (page == null) page = WITCH_PAGE;
+
+        if (limit == null) limit = 3;
+        if (page == null) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit should not be more than 100");
         Pageable studentPageable =
