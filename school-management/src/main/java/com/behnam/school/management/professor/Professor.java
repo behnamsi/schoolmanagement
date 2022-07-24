@@ -128,9 +128,6 @@ public class Professor {
                 ", lastName='" + lastName + '\'' +
                 ", personalId=" + personalId +
                 ", nationalId=" + nationalId +
-                ", courses=" + courses +
-                ", professorCollege=" + professorCollege +
-                ", studentsOfProfessor=" + studentsOfProfessor +
                 '}';
     }
 }

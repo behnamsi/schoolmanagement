@@ -17,16 +17,19 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getAllCourses() {
-        return service.getAllCourses();
+    public List<Course> getAllCourses(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer limit
+    ) {
+        return service.getAllCourses(page, limit);
     }
 
     @PostMapping(path = "add/")
     public void addCourse(@RequestBody Course course,
                           @RequestParam() Long professorId,
                           @RequestParam() Long collegeId
-                          ) {
-        service.addCourse(course,professorId,collegeId);
+    ) {
+        service.addCourse(course, professorId, collegeId);
     }
 
     @DeleteMapping("{courseName}/delete-name")

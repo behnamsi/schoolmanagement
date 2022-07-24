@@ -6,9 +6,15 @@ import com.behnam.school.management.course.Course;
 import com.behnam.school.management.course.CourseRepository;
 import com.behnam.school.management.professor.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.*;
 
 @Service
@@ -16,6 +22,8 @@ public class StudentService {
     private final StudentRepository repository;
     private final CollegeRepository collegeRepository;
     private final CourseRepository courseRepository;
+    private final int LIMIT_PER_PAGE = 5;
+    private final int WITCH_PAGE = 0;
 
     @Autowired
     public StudentService(StudentRepository repository, CollegeRepository collegeRepository, CourseRepository courseRepository) {
@@ -24,8 +32,16 @@ public class StudentService {
         this.courseRepository = courseRepository;
     }
 
-    public List<Student> getAllStudents() {
-        return repository.findAll();
+    public List<Student> getAllStudents(Integer limit, Integer page) {
+        if (limit == null) limit = LIMIT_PER_PAGE;
+        if (page == null) page = WITCH_PAGE;
+        else page -= 1;
+        if (limit > 100) throw new IllegalStateException("limit should not be more than 100");
+        Pageable studentPageable =
+                PageRequest.of(page, limit, Sort.by("lastName").descending());
+        Page<Student> studentPage = repository.findAll(studentPageable);
+        return studentPage.getContent();
+        // return repository.findAll();
     }
 
     public void addStudent(Student student, Long collegeId) {

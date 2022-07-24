@@ -5,6 +5,10 @@ import com.behnam.school.management.college.CollegeRepository;
 import com.behnam.school.management.professor.Professor;
 import com.behnam.school.management.professor.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,8 +29,16 @@ public class CourseService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<Course> getAllCourses() {
-        return repository.findAll();
+    public List<Course> getAllCourses(Integer page, Integer limit) {
+        if (limit == null) limit = 3;
+        if (page == null) page = 0;
+        else page -= 1;
+        if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
+        Pageable coursePageable = PageRequest.of(page, limit, Sort.by("courseName").descending());
+        Page<Course> coursePage = repository.findAll(coursePageable);
+        return coursePage.getContent();
+        //        return repository.findAll();
+
     }
 
     public void addCourse(Course course, Long professorId, Long collegeId) {

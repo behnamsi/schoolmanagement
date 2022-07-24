@@ -24,8 +24,11 @@ public class StudentController {
 
     // get the all of students
     @GetMapping
-    public List<Student> getAllStudents() {
-        return service.getAllStudents();
+    public List<Student> getAllStudents(
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer page
+    ) {
+        return service.getAllStudents(limit,page);
     }
 
     //get student courses using university id
@@ -36,7 +39,7 @@ public class StudentController {
         return service.getStudentCourses(uniID);
     }
 
-    // get student averages
+    // get student average
     @GetMapping(path = "{uniID}/get-average")
     public Double getStudentAverage(@PathVariable("uniID") Long uniID) {
         return service.getStudentAverage(uniID);

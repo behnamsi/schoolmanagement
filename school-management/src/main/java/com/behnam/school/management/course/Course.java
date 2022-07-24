@@ -113,9 +113,6 @@ public class Course {
                 "courseId=" + courseId +
                 ", courseName='" + courseName + '\'' +
                 ", unitNumber=" + unitNumber +
-                ", professor=" + professor +
-                ", courseCollege=" + courseCollege +
-                ", enrolled_students=" + enrolled_students +
                 '}';
     }
 }

@@ -170,9 +170,6 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", nationalId=" + nationalId +
                 ", universityId=" + universityId +
-                ", studentCollege=" + studentCollege +
-                ", studentCourses=" + studentCourses +
-                ", professorsOfStudent=" + professorsOfStudent +
                 '}';
     }
 }

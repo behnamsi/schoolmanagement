@@ -17,8 +17,11 @@ public class CollegeController {
     }
 
     @GetMapping
-    public List<College> getAllColleges() {
-        return service.getAllColleges();
+    public List<College> getAllColleges(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer limit
+    ) {
+        return service.getAllColleges(page,limit);
     }
 
     @PostMapping("add/")

@@ -9,7 +9,7 @@ import javax.sound.sampled.Port;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/professors/")
+@RequestMapping("api/professors")
 public class ProfessorController {
 
     private final ProfessorService service;
@@ -26,8 +26,11 @@ public class ProfessorController {
 
     //get All Professors
     @GetMapping
-    public List<Professor> getAllProfessors() {
-        return service.getAllProfessors();
+    public List<Professor> getAllProfessors(
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer page
+    ) {
+        return service.getAllProfessors(page,limit);
     }
 
     // get all students that belong to a professor

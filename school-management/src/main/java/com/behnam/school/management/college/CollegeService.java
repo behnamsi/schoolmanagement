@@ -1,6 +1,10 @@
 package com.behnam.school.management.college;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,8 +22,15 @@ public class CollegeService {
         this.repository = repository;
     }
 
-    public List<College> getAllColleges() {
-        return repository.findAll();
+    public List<College> getAllColleges(Integer page, Integer limit) {
+        if (limit == null) limit = 3;
+        if (page == null) page = 0;
+        else page -= 1;
+        if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
+        Pageable collegePageable = PageRequest.of(page, limit, Sort.by("collegeName").descending());
+        Page<College> collegePage = repository.findAll(collegePageable);
+        return collegePage.getContent();
+//        return repository.findAll();
     }
 
     public void addCollege(College college) {

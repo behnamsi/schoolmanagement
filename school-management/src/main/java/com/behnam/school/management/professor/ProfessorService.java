@@ -7,9 +7,12 @@ import com.behnam.school.management.course.Course;
 import com.behnam.school.management.student.Student;
 import com.behnam.school.management.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.sound.sampled.Port;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -27,8 +30,15 @@ public class ProfessorService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<Professor> getAllProfessors() {
-        return repository.findAll();
+    public List<Professor> getAllProfessors(Integer page, Integer limit) {
+        if (limit == null) limit = 3;
+        if (page == null) page = 0;
+        else page -= 1;
+        if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
+        Pageable professorPageable = PageRequest.of(page, limit, Sort.by("lastName").descending());
+        Page<Professor> professorPage = repository.findAll(professorPageable);
+        return professorPage.getContent();
+//        return repository.findAll();
     }
 
     public void addProfessor(Professor professor, Long collegeId) {
