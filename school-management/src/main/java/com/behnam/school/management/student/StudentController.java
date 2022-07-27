@@ -2,9 +2,11 @@ package com.behnam.school.management.student;
 
 import com.behnam.school.management.college.College;
 import com.behnam.school.management.course.Course;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +25,30 @@ public class StudentController {
     // GET methods
 
     // get the all of students
+//    @GetMapping
+//    public List<Student> getAllStudents(
+//            @RequestParam(required = false) Integer limit,
+//            @RequestParam(required = false) Integer page
+//    ) {
+//        return service.getAllStudents(limit, page);
+//    }
     @GetMapping
-    public List<Student> getAllStudents(
+    public List<StudentDTO> getAllStudents(
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer page
     ) {
-        return service.getAllStudents(limit,page);
+        List<Student> students = service.getAllStudents(limit, page);
+        List<StudentDTO> studentDTOs = new ArrayList<>();
+
+        for (Student student : students
+        ) {
+            StudentDTO studentDTO = new StudentDTO();
+            BeanUtils.copyProperties(student, studentDTO);
+            studentDTOs.add(studentDTO);
+        }
+        return studentDTOs;
     }
+
 
     //get student courses using university id
     @GetMapping(path = "{uniID}/courses")

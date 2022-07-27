@@ -5,6 +5,7 @@ import com.behnam.school.management.course.Course;
 import com.behnam.school.management.professor.Professor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +76,13 @@ public class Student {
 
     // constructor
     public Student() {
+    }
+
+    public Student(String firstName, String lastName, Long nationalId, Long universityId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nationalId = nationalId;
+        this.universityId = universityId;
     }
 
     public Student(String firstName, String lastName, Long nationalId, Long universityId,

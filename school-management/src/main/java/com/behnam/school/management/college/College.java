@@ -34,6 +34,10 @@ public class College {
     public College() {
     }
 
+    public College(String collegeName) {
+        this.collegeName = collegeName;
+    }
+
     public Long getCollegeId() {
         return collegeId;
     }

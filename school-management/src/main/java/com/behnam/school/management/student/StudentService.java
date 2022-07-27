@@ -33,12 +33,15 @@ public class StudentService {
     public List<Student> getAllStudents(Integer limit, Integer page) {
 
         if (limit == null) limit = 3;
-        if (page == null) page = 0;
+        if (page == null || page == 0) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit should not be more than 100");
         Pageable studentPageable =
                 PageRequest.of(page, limit, Sort.by("lastName").descending());
         Page<Student> studentPage = repository.findAll(studentPageable);
+        if (studentPage.isEmpty()) throw new IllegalStateException("this Entity has " +
+                studentPage.getTotalPages() + " pages with "
+                + studentPage.getTotalElements() + " Elements");
         return studentPage.getContent();
         // return repository.findAll();
     }
@@ -127,6 +130,7 @@ public class StudentService {
         }
     }
 
+    @Transactional
     public List<String> getStudentCourses(Long uniId) {
         if (!repository.existsByUniversityId(uniId)) {
             throw new IllegalStateException("invalid uni id for the student");
@@ -203,6 +207,7 @@ public class StudentService {
         student.setScores(studentScoresMap);
     }
 
+    @Transactional
     public Double getStudentAverage(Long uniID) {
         if (!repository.existsByUniversityId(uniID)) {
             throw new IllegalStateException("invalid uni id");
