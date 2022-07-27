@@ -51,7 +51,7 @@ public class StudentService {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setFirstName(student.getFirstName());
         studentDTO.setLastName(student.getLastName());
-        student.setUniversityId(student.getUniversityId());
+        studentDTO.setUniversityId(student.getUniversityId());
         return studentDTO;
     }
 
