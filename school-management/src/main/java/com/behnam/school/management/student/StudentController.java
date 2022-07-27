@@ -24,7 +24,7 @@ public class StudentController {
 
     // get the all of students
     @GetMapping
-    public List<Student> getAllStudents(
+    public List<StudentDTO> getAllStudents(
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer page
     ) {

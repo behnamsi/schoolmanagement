@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -30,7 +31,7 @@ public class StudentService {
         this.courseRepository = courseRepository;
     }
 
-    public List<Student> getAllStudents(Integer limit, Integer page) {
+    public List<StudentDTO> getAllStudents(Integer limit, Integer page) {
 
         if (limit == null) limit = 3;
         if (page == null) page = 0;
@@ -39,8 +40,19 @@ public class StudentService {
         Pageable studentPageable =
                 PageRequest.of(page, limit, Sort.by("lastName").descending());
         Page<Student> studentPage = repository.findAll(studentPageable);
-        return studentPage.getContent();
+        return studentPage.getContent()
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
         // return repository.findAll();
+    }
+
+    private StudentDTO convertEntityToDto(Student student) {
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setFirstName(student.getFirstName());
+        studentDTO.setLastName(student.getLastName());
+        student.setUniversityId(student.getUniversityId());
+        return studentDTO;
     }
 
     public void addStudent(Student student, Long collegeId) {
