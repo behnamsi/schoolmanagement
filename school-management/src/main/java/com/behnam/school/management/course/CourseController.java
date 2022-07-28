@@ -17,7 +17,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getAllCourses(
+    public List<CourseDTO> getAllCourses(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit
     ) {

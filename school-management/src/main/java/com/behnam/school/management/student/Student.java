@@ -72,7 +72,7 @@ public class Student {
     private List<Professor> professorsOfStudent;
 
     @ElementCollection
-    private Map<String, Double> scores = new HashMap<>();
+    private Map<String, Double> scores;
 
     // constructor
     public Student() {

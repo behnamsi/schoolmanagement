@@ -6,6 +6,7 @@ import com.behnam.school.management.college.CollegeRepository;
 import com.behnam.school.management.course.Course;
 import com.behnam.school.management.student.Student;
 import com.behnam.school.management.student.StudentRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,15 +31,24 @@ public class ProfessorService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<Professor> getAllProfessors(Integer page, Integer limit) {
+    public List<ProfessorDTO> getAllProfessors(Integer page, Integer limit) {
         if (limit == null) limit = 3;
-        if (page == null) page = 0;
+        if (page == null || page == 0) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
         Pageable professorPageable = PageRequest.of(page, limit, Sort.by("lastName").descending());
         Page<Professor> professorPage = repository.findAll(professorPageable);
-        return professorPage.getContent();
-//        return repository.findAll();
+        List<ProfessorDTO> professorDTOS = new ArrayList<>();
+        if (professorPage.isEmpty()) throw new IllegalStateException("this Entity has " +
+                professorPage.getTotalPages() + " pages with "
+                + professorPage.getTotalElements() + " Elements");
+        for (Professor professor :
+                professorPage.getContent()) {
+            ProfessorDTO professorD = new ProfessorDTO();
+            BeanUtils.copyProperties(professor, professorD);
+            professorDTOS.add(professorD);
+        }
+        return professorDTOS;
     }
 
     public void addProfessor(Professor professor, Long collegeId) {

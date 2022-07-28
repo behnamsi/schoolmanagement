@@ -17,7 +17,7 @@ public class CollegeController {
     }
 
     @GetMapping
-    public List<College> getAllColleges(
+    public List<CollegeDTO> getAllColleges(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit
     ) {

@@ -26,7 +26,7 @@ public class ProfessorController {
 
     //get All Professors
     @GetMapping
-    public List<Professor> getAllProfessors(
+    public List<ProfessorDTO> getAllProfessors(
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer page
     ) {

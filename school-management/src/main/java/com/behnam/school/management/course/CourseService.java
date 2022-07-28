@@ -4,6 +4,7 @@ import com.behnam.school.management.college.College;
 import com.behnam.school.management.college.CollegeRepository;
 import com.behnam.school.management.professor.Professor;
 import com.behnam.school.management.professor.ProfessorRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,14 +31,25 @@ public class CourseService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<Course> getAllCourses(Integer page, Integer limit) {
+    public List<CourseDTO> getAllCourses(Integer page, Integer limit) {
         if (limit == null) limit = 3;
-        if (page == null) page = 0;
+        if (page == null || page == 0) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
         Pageable coursePageable = PageRequest.of(page, limit, Sort.by("courseName").descending());
         Page<Course> coursePage = repository.findAll(coursePageable);
-        return coursePage.getContent();
+        if (coursePage.isEmpty()) throw new IllegalStateException("this Entity has " +
+                coursePage.getTotalPages() + " pages with "
+                + coursePage.getTotalElements() + " Elements");
+        List<CourseDTO> courseDTOS = new ArrayList<>();
+        for (Course course :
+                coursePage.getContent()) {
+            CourseDTO courseDto = new CourseDTO();
+            BeanUtils.copyProperties(course, courseDto);
+            courseDTOS.add(courseDto);
+        }
+        return courseDTOS;
+//        return coursePage.getContent();
         //        return repository.findAll();
 
     }

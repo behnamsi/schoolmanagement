@@ -5,6 +5,7 @@ import com.behnam.school.management.college.CollegeRepository;
 import com.behnam.school.management.course.Course;
 import com.behnam.school.management.course.CourseRepository;
 import com.behnam.school.management.professor.Professor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class StudentService {
         this.courseRepository = courseRepository;
     }
 
-    public List<Student> getAllStudents(Integer limit, Integer page) {
+    public List<StudentDTO> getAllStudents(Integer limit, Integer page) {
 
         if (limit == null) limit = 3;
         if (page == null || page == 0) page = 0;
@@ -42,8 +43,14 @@ public class StudentService {
         if (studentPage.isEmpty()) throw new IllegalStateException("this Entity has " +
                 studentPage.getTotalPages() + " pages with "
                 + studentPage.getTotalElements() + " Elements");
-        return studentPage.getContent();
-        // return repository.findAll();
+        List<StudentDTO> studentDTOs=new ArrayList<>();
+        for (Student student :
+                studentPage.getContent()) {
+            StudentDTO studentDTO = new StudentDTO();
+            BeanUtils.copyProperties(student, studentDTO);
+            studentDTOs.add(studentDTO);
+        }
+        return studentDTOs;
     }
 
     public void addStudent(Student student, Long collegeId) {

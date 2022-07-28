@@ -37,16 +37,7 @@ public class StudentController {
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer page
     ) {
-        List<Student> students = service.getAllStudents(limit, page);
-        List<StudentDTO> studentDTOs = new ArrayList<>();
-
-        for (Student student : students
-        ) {
-            StudentDTO studentDTO = new StudentDTO();
-            BeanUtils.copyProperties(student, studentDTO);
-            studentDTOs.add(studentDTO);
-        }
-        return studentDTOs;
+        return service.getAllStudents(limit, page);
     }
 
 

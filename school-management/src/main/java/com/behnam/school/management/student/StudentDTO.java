@@ -4,6 +4,7 @@ public class StudentDTO {
     private String firstName;
     private String lastName;
     private Long universityId;
+    private Long nationalId;
 
     public StudentDTO() {
     }
@@ -14,6 +15,14 @@ public class StudentDTO {
 
     public Long getUniversityId() {
         return universityId;
+    }
+
+    public Long getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(Long nationalId) {
+        this.nationalId = nationalId;
     }
 
     public void setUniversityId(Long universityId) {
