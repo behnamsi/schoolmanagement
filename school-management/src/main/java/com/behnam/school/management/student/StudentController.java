@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(path = "api/students/")
+@RequestMapping(path = "api/students")
 public class StudentController {
     private final StudentService service;
 
@@ -28,7 +28,7 @@ public class StudentController {
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer page
     ) {
-        return service.getAllStudents(limit,page);
+        return service.getAllStudents(limit, page);
     }
 
     //get student courses using university id
@@ -40,7 +40,7 @@ public class StudentController {
     }
 
     // get student average
-    @GetMapping(path = "{uniID}/get-average")
+    @GetMapping(path = "{uniID}/averages")
     public Double getStudentAverage(@PathVariable("uniID") Long uniID) {
         return service.getStudentAverage(uniID);
     }
@@ -49,7 +49,7 @@ public class StudentController {
     //POST methods
     @PostMapping(path = "add")
     public void addStudent(
-            @RequestBody Student student,
+            @RequestBody StudentDTO student,
             @RequestParam Long collegeId
     ) {
         service.addStudent(student, collegeId);
@@ -63,7 +63,7 @@ public class StudentController {
         service.deleteStudent(id);
     }
 
-    @DeleteMapping(path = "{uniId}/delete-with-uni-id/")
+    @DeleteMapping(path = "{uniId}/delete/university-id/")
     public void deleteStudentByUniId(
             @PathVariable("uniId") Long uniId
     ) {
@@ -85,7 +85,7 @@ public class StudentController {
     }
 
     // add course for student
-    @PutMapping(path = "{uniId}/add-score/{courseName}")
+    @PutMapping(path = "{uniId}/score/{courseName}")
     public void addScoreCourse(
             @PathVariable("uniId") Long uniId,
             @PathVariable("courseName") String courseName,

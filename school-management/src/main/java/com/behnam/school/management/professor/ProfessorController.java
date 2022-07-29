@@ -26,7 +26,7 @@ public class ProfessorController {
 
     //get All Professors
     @GetMapping
-    public List<Professor> getAllProfessors(
+    public List<ProfessorDTO> getAllProfessors(
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer page
     ) {
@@ -34,7 +34,7 @@ public class ProfessorController {
     }
 
     // get all students that belong to a professor
-    @GetMapping(path = "{professorId}/get-students")
+    @GetMapping(path = "{professorId}/students")
     public List<String> getProfessorStudents(
             @PathVariable("professorId") Long professorId
     ) {
@@ -42,7 +42,7 @@ public class ProfessorController {
     }
 
     // get all students averages that belong to a professor
-    @GetMapping(path = "{professorId}/get-students/avg")
+    @GetMapping(path = "{professorId}/students/averages")
     public List<String> getProfessorStudentsAverages(
             @PathVariable("professorId") Long professorId
     ) {
@@ -50,21 +50,21 @@ public class ProfessorController {
     }
 
     // get courses of a professor
-    @GetMapping(path = "{professorId}/course")
+    @GetMapping(path = "{professorId}/courses")
     public List<String> getProfessorsCourses(
             @PathVariable("professorId") Long professorId
     ) {
         return service.getProfessorsCourses(professorId);
     }
     // get students of a course of professor
-    @GetMapping(path = "{professorId}/get-students-of-a-course/{courseName}")
+    @GetMapping(path = "{professorId}/students/courses/{courseName}")
     public List<String> getProfessorStudentsByCourse(
             @PathVariable("courseName") String courseName,
             @PathVariable("professorId") Long professorId
     ){
         return service.getProfessorStudentsByCourse(professorId,courseName);
     }
-    @GetMapping(path = "{professorId}/get-students-of-a-course/avg/{courseName}")
+    @GetMapping(path = "{professorId}/students/courses/{courseName}/averages")
     public List<String> getProfessorStudentsAverageByCourse(
             @PathVariable("courseName") String courseName,
             @PathVariable("professorId") Long professorId
@@ -75,9 +75,9 @@ public class ProfessorController {
 
     //POST methods:
 
-    @PostMapping(path = "add/")
+    @PostMapping(path = "add")
     public void addProfessor(
-            @RequestBody Professor professor,
+            @RequestBody ProfessorDTO professor,
             @RequestParam() Long collegeId
     ) {
         service.addProfessor(professor, collegeId);

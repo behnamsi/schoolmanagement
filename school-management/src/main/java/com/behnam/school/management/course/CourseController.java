@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/courses/")
+@RequestMapping(path = "api/courses")
 public class CourseController {
     private final CourseService service;
 
@@ -17,15 +17,15 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getAllCourses(
+    public List<CourseDTO> getAllCourses(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit
     ) {
         return service.getAllCourses(page, limit);
     }
 
-    @PostMapping(path = "add/")
-    public void addCourse(@RequestBody Course course,
+    @PostMapping(path = "add")
+    public void addCourse(@RequestBody CourseDTO course,
                           @RequestParam() Long professorId,
                           @RequestParam() Long collegeId
     ) {

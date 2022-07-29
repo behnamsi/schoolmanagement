@@ -1,5 +1,6 @@
 package com.behnam.school.management.college;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,18 +24,33 @@ public class CollegeService {
         this.repository = repository;
     }
 
-    public List<College> getAllColleges(Integer page, Integer limit) {
+    public List<CollegeDTO> getAllColleges(Integer page, Integer limit) {
+        // page and limit filters
         if (limit == null) limit = 3;
-        if (page == null) page = 0;
+        if (page == null || page == 0) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
+        // paging and sorting and getting the data
         Pageable collegePageable = PageRequest.of(page, limit, Sort.by("collegeName").descending());
         Page<College> collegePage = repository.findAll(collegePageable);
-        return collegePage.getContent();
-//        return repository.findAll();
+        // mapping  to dto
+        List<CollegeDTO> collegeDTOS = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        for (College college :
+                collegePage.getContent()) {
+            CollegeDTO collegeDTO = new CollegeDTO();
+            mapper.map(college, collegeDTO);
+            collegeDTOS.add(collegeDTO);
+        }
+        //returning
+        return collegeDTOS;
     }
 
-    public void addCollege(College college) {
+    public void addCollege(CollegeDTO collegeDTO) {
+        // mapping to entity
+        College college = new College();
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(collegeDTO, college);
         repository.save(college);
     }
 

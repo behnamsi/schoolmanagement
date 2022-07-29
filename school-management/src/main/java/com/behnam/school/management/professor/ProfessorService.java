@@ -6,6 +6,7 @@ import com.behnam.school.management.college.CollegeRepository;
 import com.behnam.school.management.course.Course;
 import com.behnam.school.management.student.Student;
 import com.behnam.school.management.student.StudentRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,19 +31,36 @@ public class ProfessorService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<Professor> getAllProfessors(Integer page, Integer limit) {
+    public List<ProfessorDTO> getAllProfessors(Integer page, Integer limit) {
+        // limit and paging filter
         if (limit == null) limit = 3;
-        if (page == null) page = 0;
+        if (page == null || page == 0) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
+        // paging and sorting data
         Pageable professorPageable = PageRequest.of(page, limit, Sort.by("lastName").descending());
         Page<Professor> professorPage = repository.findAll(professorPageable);
-        return professorPage.getContent();
-//        return repository.findAll();
+        // mapping to dto
+        ModelMapper modelMapper = new ModelMapper();
+        List<ProfessorDTO> professorDTOS = new ArrayList<>();
+        for (Professor professor :
+                professorPage.getContent()) {
+            ProfessorDTO professorDTO = new ProfessorDTO();
+            modelMapper.map(professor, professorDTO);
+            professorDTOS.add(professorDTO);
+        }
+        return professorDTOS;
     }
 
-    public void addProfessor(Professor professor, Long collegeId) {
+    public void addProfessor(ProfessorDTO professorDTO, Long collegeId) {
         if (collegeId != null) {
+            College college = collegeRepository.findById(collegeId).orElseThrow(() ->
+                    new IllegalStateException("invalid college id"));
+            // mapping to entity
+            Professor professor = new Professor();
+            ModelMapper mapper = new ModelMapper();
+            mapper.map(professorDTO, professor);
+            // check for national and personal id
             Optional<Professor> professorNationalId = repository.findProfessorByNationalId
                     (professor.getNationalId());
             Optional<Professor> professorPersonalId = repository.findProfessorByPersonalId
@@ -50,8 +68,7 @@ public class ProfessorService {
             if (professorNationalId.isPresent() || professorPersonalId.isPresent()) {
                 throw new IllegalStateException("personal id or national id is taken");
             }
-            College college = collegeRepository.findById(collegeId).orElseThrow(() ->
-                    new IllegalStateException("invalid college id"));
+
             professor.setProfessorCollege(college);
             repository.save(professor);
         }

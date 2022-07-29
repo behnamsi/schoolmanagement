@@ -77,18 +77,6 @@ public class Student {
     public Student() {
     }
 
-    public Student(String firstName, String lastName, Long nationalId, Long universityId,
-                   College studentCollege, List<Course> studentCourses,
-                   List<Professor> professorsOfStudent, Map<String, Double> scores) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nationalId = nationalId;
-        this.universityId = universityId;
-        this.studentCollege = studentCollege;
-        this.studentCourses = studentCourses;
-        this.professorsOfStudent = professorsOfStudent;
-        this.scores = scores;
-    }
 
     public Map<String, Double> getScores() {
         return scores;
@@ -100,10 +88,6 @@ public class Student {
 
     public Long getStudentId() {
         return studentId;
-    }
-
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
     }
 
     public String getFirstName() {

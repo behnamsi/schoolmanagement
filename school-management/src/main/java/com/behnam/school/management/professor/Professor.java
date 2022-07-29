@@ -60,9 +60,6 @@ public class Professor {
         return professorId;
     }
 
-    public void setProfessorId(Long professorId) {
-        this.professorId = professorId;
-    }
 
     public String getFirstName() {
         return firstName;

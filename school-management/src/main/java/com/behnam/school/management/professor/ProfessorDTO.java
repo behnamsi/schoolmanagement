@@ -1,22 +1,12 @@
-package com.behnam.school.management.student;
+package com.behnam.school.management.professor;
 
-public class StudentDTO {
+public class ProfessorDTO {
     private String firstName;
     private String lastName;
+    private Long personalId;
     private Long nationalId;
-    private Long universityId;
 
-
-    public StudentDTO() {
-    }
-
-
-    public Long getNationalId() {
-        return nationalId;
-    }
-
-    public void setNationalId(Long nationalId) {
-        this.nationalId = nationalId;
+    public ProfessorDTO() {
     }
 
     public String getFirstName() {
@@ -35,20 +25,28 @@ public class StudentDTO {
         this.lastName = lastName;
     }
 
-    public Long getUniversityId() {
-        return universityId;
+    public Long getPersonalId() {
+        return personalId;
     }
 
-    public void setUniversityId(Long universityId) {
-        this.universityId = universityId;
+    public void setPersonalId(Long personalId) {
+        this.personalId = personalId;
+    }
+
+    public Long getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(Long nationalId) {
+        this.nationalId = nationalId;
     }
 
     @Override
     public String toString() {
-        return "StudentDTO{" +
+        return "ProfessorDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", universityId=" + universityId +
+                ", personalId=" + personalId +
                 ", nationalId=" + nationalId +
                 '}';
     }
