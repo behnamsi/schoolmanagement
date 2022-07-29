@@ -50,7 +50,7 @@ public class StudentController {
     }
 
     // get student average
-    @GetMapping(path = "{uniID}/get-average")
+    @GetMapping(path = "{uniID}/average")
     public Double getStudentAverage(@PathVariable("uniID") Long uniID) {
         return service.getStudentAverage(uniID);
     }
@@ -95,7 +95,7 @@ public class StudentController {
     }
 
     // add course for student
-    @PutMapping(path = "{uniId}/add-score/{courseName}")
+    @PutMapping(path = "{uniId}/score/{courseName}")
     public void addScoreCourse(
             @PathVariable("uniId") Long uniId,
             @PathVariable("courseName") String courseName,
