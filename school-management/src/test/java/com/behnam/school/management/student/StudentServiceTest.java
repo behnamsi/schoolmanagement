@@ -24,13 +24,13 @@ class StudentServiceTest {
 
     @Test
     void getStudentCourses() {
-        List<String> courseList = service.getStudentCourses(9261156L);
+        List<String> courseList = service.getStudentCourses(22L);
         System.out.println("courseList = " + courseList);
     }
 
     @Test
     void getStudentAverage() {
-        Double average = service.getStudentAverage(9261156L);
+        Double average = service.getStudentAverage(22L);
         System.out.println("average = " + average);
     }
 
@@ -64,13 +64,13 @@ class StudentServiceTest {
         Long nationalId = null;
         Long universituId = null;
 
-        service.updateStudent(9261156L, firstName, lastName, courses, nationalId, universituId);
+        service.updateStudent(22L, firstName, lastName, courses, nationalId, universituId);
     }
 
     @Test
     void addScoreCourse() {
-        service.addScoreCourse(9261156L, "java", 20D);
-        service.addScoreCourse(9261156L, "algorithem", 20D);
+        service.addScoreCourse(22L, "java", 20D);
+        service.addScoreCourse(22L, "algorithem", 20D);
     }
 
     @Test

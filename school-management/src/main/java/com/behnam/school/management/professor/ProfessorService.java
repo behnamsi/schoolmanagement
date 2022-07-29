@@ -112,7 +112,7 @@ public class ProfessorService {
             professor.setPersonalId(personalId);
         }
     }
-
+    @Transactional
     public List<String> getProfessorStudents(Long professorId) {
         Professor professor = repository.findById(professorId).orElseThrow(
                 () -> new IllegalStateException("invalid professor id")
@@ -123,7 +123,7 @@ public class ProfessorService {
         }
         return studentsName;
     }
-
+    @Transactional
     public List<String> getProfessorStudentsAverages(Long professorId) {
         Professor professor = repository.findById(professorId).orElseThrow(
                 () -> new IllegalStateException("invalid professor id")
@@ -147,7 +147,7 @@ public class ProfessorService {
         }
         return studentsAverageList;
     }
-
+    @Transactional
     public List<String> getProfessorsCourses(Long professorId) {
 
         Professor professor = repository.findById(professorId).orElseThrow(
@@ -160,7 +160,7 @@ public class ProfessorService {
         return professorCourses;
 
     }
-
+    @Transactional
     public List<String> getProfessorStudentsByCourse(Long professorId, String courseName) {
 
         Professor professor = repository.findById(professorId).orElseThrow(
@@ -185,7 +185,7 @@ public class ProfessorService {
         return studentsNames;
 
     }
-
+    @Transactional
     public List<String> getProfessorStudentsAverageByCourse(Long professorId, String courseName) {
         Professor professor = repository.findById(professorId).orElseThrow(
                 () -> new IllegalStateException("invalid professor id")
