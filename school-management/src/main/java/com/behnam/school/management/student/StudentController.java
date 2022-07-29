@@ -59,10 +59,10 @@ public class StudentController {
     //POST methods
     @PostMapping(path = "add")
     public void addStudent(
-            @RequestBody Student student,
+            @RequestBody StudentDTO studentDTO,
             @RequestParam Long collegeId
     ) {
-        service.addStudent(student, collegeId);
+        service.addStudent(studentDTO, collegeId);
     }
 
 

@@ -20,17 +20,8 @@ class CourseServiceTest {
 
     @Test
     void addCourse() {
+
     }
 
-    @Test
-    void deleteCourseByName() {
-    }
 
-    @Test
-    void deleteCourseById() {
-    }
-
-    @Test
-    void updateCourse() {
-    }
 }

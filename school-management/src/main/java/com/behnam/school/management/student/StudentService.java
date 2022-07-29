@@ -5,6 +5,7 @@ import com.behnam.school.management.college.CollegeRepository;
 import com.behnam.school.management.course.Course;
 import com.behnam.school.management.course.CourseRepository;
 import com.behnam.school.management.professor.Professor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,7 +44,7 @@ public class StudentService {
         if (studentPage.isEmpty()) throw new IllegalStateException("this Entity has " +
                 studentPage.getTotalPages() + " pages with "
                 + studentPage.getTotalElements() + " Elements");
-        List<StudentDTO> studentDTOs=new ArrayList<>();
+        List<StudentDTO> studentDTOs = new ArrayList<>();
         for (Student student :
                 studentPage.getContent()) {
             StudentDTO studentDTO = new StudentDTO();
@@ -53,8 +54,12 @@ public class StudentService {
         return studentDTOs;
     }
 
-    public void addStudent(Student student, Long collegeId) {
+    public void addStudent(StudentDTO studentDTO, Long collegeId) {
         if (collegeId != null) {
+            Student student = new Student();
+            BeanUtils.copyProperties(studentDTO, student);
+            College college = collegeRepository.findById(collegeId).orElseThrow(() ->
+                    new IllegalStateException("invalid college id"));
             Optional<Student> studentUniId = repository.findStudentByUniversityIdOptional(student.getUniversityId());
             Optional<Student> studentnatId = repository.findStudentByNationalId(student.getNationalId());
             if (studentUniId.isPresent()) {
@@ -63,8 +68,7 @@ public class StudentService {
             if (studentnatId.isPresent()) {
                 throw new IllegalStateException("national id is taken");
             }
-            College college = collegeRepository.findById(collegeId).orElseThrow(() ->
-                    new IllegalStateException("invalid college id"));
+
             student.setStudentCollege(college);
             repository.save(student);
         } else {

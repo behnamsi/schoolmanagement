@@ -46,7 +46,9 @@ public class CollegeService {
 //        return repository.findAll();
     }
 
-    public void addCollege(College college) {
+    public void addCollege(CollegeDTO collegeDTO) {
+        College college = new College();
+        BeanUtils.copyProperties(collegeDTO, college);
         repository.save(college);
     }
 

@@ -41,5 +41,13 @@ public class StudentDTO {
         this.lastName = lastName;
     }
 
-
+    @Override
+    public String toString() {
+        return "StudentDTO{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", universityId=" + universityId +
+                ", nationalId=" + nationalId +
+                '}';
+    }
 }

@@ -23,9 +23,9 @@ public class CourseController {
     ) {
         return service.getAllCourses(page, limit);
     }
-
-    @PostMapping(path = "add/")
-    public void addCourse(@RequestBody Course course,
+    // TODO add DTO to creating course and college Packages
+    @PostMapping(path = "add")
+    public void addCourse(@RequestBody CourseDTO course,
                           @RequestParam() Long professorId,
                           @RequestParam() Long collegeId
     ) {

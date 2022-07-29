@@ -25,7 +25,7 @@ public class CollegeController {
     }
 
     @PostMapping("add/")
-    public void addCollege(@RequestBody College college) {
+    public void addCollege(@RequestBody CollegeDTO college) {
         service.addCollege(college);
     }
 

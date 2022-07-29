@@ -51,8 +51,14 @@ public class ProfessorService {
         return professorDTOS;
     }
 
-    public void addProfessor(Professor professor, Long collegeId) {
+    public void addProfessor(ProfessorDTO professorDTO, Long collegeId) {
         if (collegeId != null) {
+            College college = collegeRepository.findById(collegeId).orElseThrow(() ->
+                    new IllegalStateException("invalid college id"));
+            Professor professor = new Professor();
+            BeanUtils.copyProperties(professorDTO, professor);
+            System.out.println("professor = " + professor);
+            System.out.println("professorDTO = " + professorDTO);
             Optional<Professor> professorNationalId = repository.findProfessorByNationalId
                     (professor.getNationalId());
             Optional<Professor> professorPersonalId = repository.findProfessorByPersonalId
@@ -60,10 +66,10 @@ public class ProfessorService {
             if (professorNationalId.isPresent() || professorPersonalId.isPresent()) {
                 throw new IllegalStateException("personal id or national id is taken");
             }
-            College college = collegeRepository.findById(collegeId).orElseThrow(() ->
-                    new IllegalStateException("invalid college id"));
             professor.setProfessorCollege(college);
             repository.save(professor);
+            System.out.println("professor = " + professor);
+
         }
     }
 

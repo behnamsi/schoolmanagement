@@ -25,12 +25,12 @@ class StudentServiceTest {
 
     @Test
     void addStudent() {
-        Student student = new Student
-                ("beni",
-                        "si",
-                        1L,
-                        22L);
-        service.addStudent(student, 1L);
+        StudentDTO student = new StudentDTO();
+        student.setFirstName("Behnam");
+        student.setLastName("Saghary");
+        student.setUniversityId(1232L);
+        student.setNationalId(12334322L);
+        service.addStudent(student,1L);
     }
 
     @Test

@@ -54,12 +54,14 @@ public class CourseService {
 
     }
 
-    public void addCourse(Course course, Long professorId, Long collegeId) {
+    public void addCourse(CourseDTO courseDTO, Long professorId, Long collegeId) {
         if (professorId != null && collegeId != null) {
             Professor professor = professorRepository.findById(professorId).
                     orElseThrow(() -> new IllegalStateException("invalid professor id"));
             College college = collegeRepository.findById(collegeId).orElseThrow(() ->
                     new IllegalStateException("invalid college id"));
+            Course course = new Course();
+            BeanUtils.copyProperties(courseDTO, course);
             course.setProfessor(professor);
             course.setCourseCollege(college);
             repository.save(course);
