@@ -4,6 +4,8 @@ import com.behnam.school.management.professor.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @RestController
@@ -18,40 +20,40 @@ public class CourseController {
 
     @GetMapping
     public List<CourseDTO> getAllCourses(
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer limit
+            @RequestParam(required = false) @Min(1) Integer page,
+            @RequestParam(required = false) @Min(1) Integer limit
     ) {
         return service.getAllCourses(page, limit);
     }
 
     @PostMapping(path = "add")
-    public void addCourse(@RequestBody CourseDTO course,
-                          @RequestParam() Long professorId,
-                          @RequestParam() Long collegeId
+    public void addCourse(@Valid @RequestBody CourseDTO course,
+                          @RequestParam() @Min(1) Long professorId,
+                          @RequestParam() @Min(1) Long collegeId
     ) {
         service.addCourse(course, professorId, collegeId);
     }
 
     @DeleteMapping("{courseName}/delete-name")
     public void deleteCourseByName(
-            @PathVariable("courseName") String courseName
+            @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName
     ) {
         service.deleteCourseByName(courseName);
     }
 
     @DeleteMapping(path = "{courseId}/delete-id")
     public void deleteCourseById(
-            @PathVariable("courseId") Long courseId
+            @PathVariable("courseId") @Min(1) Long courseId
     ) {
         service.deleteCourseById(courseId);
     }
 
     @PutMapping(path = "{courseId}/update")
     public void updateCourse(
-            @PathVariable("courseId") Long courseId,
-            @RequestParam(required = false) String courseName,
-            @RequestParam(required = false) Integer unitNumber,
-            @RequestParam(required = false) Long professorId
+            @PathVariable("courseId") @Min(1) Long courseId,
+            @RequestParam(required = false) @NotEmpty @Size(min = 1, max = 20) String courseName,
+            @RequestParam(required = false) @Min(1) @Max(3) Integer unitNumber,
+            @RequestParam(required = false) @Min(1) Long professorId
     ) {
         service.updateCourse(courseId, courseName, unitNumber, professorId);
     }

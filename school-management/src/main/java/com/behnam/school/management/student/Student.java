@@ -5,7 +5,10 @@ import com.behnam.school.management.course.Course;
 import com.behnam.school.management.professor.Professor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +17,7 @@ import java.util.Map;
 @Entity
 @Table()
 public class Student {
+    // ----- ID -----
     @Id
 
     @GeneratedValue(
@@ -21,14 +25,39 @@ public class Student {
     )
     @Column(updatable = false)
     private Long studentId;
+    // ----- END ID -----
+
+    // ----- first name -----
     @Column(nullable = false, length = 15)
+    @NotEmpty
+    @NotNull
+    @Size(min = 3, max = 15, message = "the length must be between 2 and 15")
     private String firstName;
+    // ----- end first name -----
+
+    // ----- last name -----
     @Column(nullable = false, length = 25)
+    @NotEmpty
+    @NotNull
+    @Size(min = 3, max = 25, message = "the length must be between 2 and 25")
     private String lastName;
+    // ----- end first name -----
+
+    // -----national id -----
     @Column(nullable = false, unique = true)
+    @Digits(integer = 10, fraction = 0, message = "must be 10 digits")
+    @NotNull
+    @Min(1111111111)
     private Long nationalId;
+    // ----- end national id -----
+
+    // ----- university id -----
     @Column(nullable = false, unique = true)
+    @Digits(integer = 7, fraction = 0, message = "must be 7 digits")
+    @NotNull
+    @Min(1111111)
     private Long universityId;
+    // ----- end university id -----
 
     // studentCollege
     @ManyToOne(

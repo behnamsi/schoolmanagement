@@ -3,14 +3,17 @@ package com.behnam.school.management.student;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.validation.annotation.Validated;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Validated
 class StudentServiceTest {
 
     @Autowired
@@ -36,11 +39,11 @@ class StudentServiceTest {
 
     @Test
     void addStudent() {
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setFirstName("abbas");
-        studentDTO.setLastName("bu azar");
-        studentDTO.setUniversityId(123434431L);
-        studentDTO.setNationalId(21811872634L);
+        @Valid  StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setFirstName("abbas23");
+        studentDTO.setLastName("bu azar23");
+        studentDTO.setUniversityId(2213438L);
+        studentDTO.setNationalId(217111899L);
         service.addStudent(studentDTO, 1L);
     }
 
@@ -51,7 +54,7 @@ class StudentServiceTest {
 
     @Test
     void deleteStudentByUniId() {
-        service.deleteStudentByUniId(9261156L);
+        service.deleteStudentByUniId(1213434431239L);
     }
 
     @Test

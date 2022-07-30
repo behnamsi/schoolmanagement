@@ -3,13 +3,19 @@ package com.behnam.school.management.professor;
 
 import com.behnam.school.management.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sound.sampled.Port;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/professors")
+@Validated
 public class ProfessorController {
 
     private final ProfessorService service;
@@ -27,16 +33,16 @@ public class ProfessorController {
     //get All Professors
     @GetMapping
     public List<ProfessorDTO> getAllProfessors(
-            @RequestParam(required = false) Integer limit,
-            @RequestParam(required = false) Integer page
+            @RequestParam(required = false) @Min(1) Integer limit,
+            @RequestParam(required = false) @Min(1) Integer page
     ) {
-        return service.getAllProfessors(page,limit);
+        return service.getAllProfessors(page, limit);
     }
 
     // get all students that belong to a professor
     @GetMapping(path = "{professorId}/students")
     public List<String> getProfessorStudents(
-            @PathVariable("professorId") Long professorId
+            @PathVariable("professorId") @Min(1) Long professorId
     ) {
         return service.getProfessorStudents(professorId);
     }
@@ -44,7 +50,7 @@ public class ProfessorController {
     // get all students averages that belong to a professor
     @GetMapping(path = "{professorId}/students/averages")
     public List<String> getProfessorStudentsAverages(
-            @PathVariable("professorId") Long professorId
+            @PathVariable("professorId") @Min(1) Long professorId
     ) {
         return service.getProfessorStudentsAverages(professorId);
     }
@@ -52,24 +58,26 @@ public class ProfessorController {
     // get courses of a professor
     @GetMapping(path = "{professorId}/courses")
     public List<String> getProfessorsCourses(
-            @PathVariable("professorId") Long professorId
+            @PathVariable("professorId") @Min(1) Long professorId
     ) {
         return service.getProfessorsCourses(professorId);
     }
+
     // get students of a course of professor
     @GetMapping(path = "{professorId}/students/courses/{courseName}")
     public List<String> getProfessorStudentsByCourse(
-            @PathVariable("courseName") String courseName,
-            @PathVariable("professorId") Long professorId
-    ){
-        return service.getProfessorStudentsByCourse(professorId,courseName);
+            @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
+            @PathVariable("professorId") @Min(1) Long professorId
+    ) {
+        return service.getProfessorStudentsByCourse(professorId, courseName);
     }
+
     @GetMapping(path = "{professorId}/students/courses/{courseName}/averages")
     public List<String> getProfessorStudentsAverageByCourse(
-            @PathVariable("courseName") String courseName,
-            @PathVariable("professorId") Long professorId
-    ){
-        return service.getProfessorStudentsAverageByCourse(professorId,courseName);
+            @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
+            @PathVariable("professorId") @Min(1) Long professorId
+    ) {
+        return service.getProfessorStudentsAverageByCourse(professorId, courseName);
     }
 
 
@@ -77,26 +85,26 @@ public class ProfessorController {
 
     @PostMapping(path = "add")
     public void addProfessor(
-            @RequestBody ProfessorDTO professor,
-            @RequestParam() Long collegeId
+            @Valid @RequestBody ProfessorDTO professor,
+            @RequestParam() @Min(1) Long collegeId
     ) {
         service.addProfessor(professor, collegeId);
     }
 
     @DeleteMapping(path = "{profId}/delete")
     public void deleteProfessor(
-            @PathVariable("profId") Long id
+            @PathVariable("profId") @Min(1) Long id
     ) {
         service.deleteProfessor(id);
     }
 
     @PutMapping(path = "{profId}/update")
     public void updateProfessor(
-            @PathVariable("profId") Long id,
-            @RequestParam(required = false) String first_name,
-            @RequestParam(required = false) String last_name,
-            @RequestParam(required = false) Long nationalId,
-            @RequestParam(required = false) Long personalId
+            @PathVariable("profId") @Min(1) Long id,
+            @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 15) String first_name,
+            @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 25) String last_name,
+            @RequestParam(required = false) @Min(1111111111) Long nationalId,
+            @RequestParam(required = false) @Min(1111111) Long personalId
     ) {
         service.updateProfessor(id, first_name, last_name, nationalId, personalId);
     }

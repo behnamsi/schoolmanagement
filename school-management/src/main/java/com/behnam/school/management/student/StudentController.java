@@ -3,14 +3,23 @@ package com.behnam.school.management.student;
 import com.behnam.school.management.college.College;
 import com.behnam.school.management.course.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
 
 @RestController
 @RequestMapping(path = "api/students")
+@Validated
 public class StudentController {
     private final StudentService service;
 
@@ -25,8 +34,8 @@ public class StudentController {
     // get the all of students
     @GetMapping
     public List<StudentDTO> getAllStudents(
-            @RequestParam(required = false) Integer limit,
-            @RequestParam(required = false) Integer page
+            @RequestParam(required = false) @Min(1) Integer limit,
+            @RequestParam(required = false) @Min(1) Integer page
     ) {
         return service.getAllStudents(limit, page);
     }
@@ -34,14 +43,14 @@ public class StudentController {
     //get student courses using university id
     @GetMapping(path = "{uniID}/courses")
     public List<String> getStudentCourses(
-            @PathVariable("uniID") Long uniID
+            @PathVariable("uniID") @Min(1111111) Long uniID
     ) {
         return service.getStudentCourses(uniID);
     }
 
     // get student average
     @GetMapping(path = "{uniID}/averages")
-    public Double getStudentAverage(@PathVariable("uniID") Long uniID) {
+    public Double getStudentAverage(@PathVariable("uniID") @Min(1) Long uniID) {
         return service.getStudentAverage(uniID);
     }
 
@@ -49,8 +58,8 @@ public class StudentController {
     //POST methods
     @PostMapping(path = "add")
     public void addStudent(
-            @RequestBody StudentDTO student,
-            @RequestParam Long collegeId
+            @Valid @RequestBody StudentDTO student,
+            @RequestParam @Min(1) Long collegeId
     ) {
         service.addStudent(student, collegeId);
     }
@@ -58,14 +67,14 @@ public class StudentController {
 
     @DeleteMapping(path = "{id}/delete")
     public void deleteStudent(
-            @PathVariable("id") Long id
+            @PathVariable("id") @Min(1) Long id
     ) {
         service.deleteStudent(id);
     }
 
     @DeleteMapping(path = "{uniId}/delete/university-id/")
     public void deleteStudentByUniId(
-            @PathVariable("uniId") Long uniId
+            @PathVariable("uniId") @Min(1111111) Long uniId
     ) {
 
         service.deleteStudentByUniId(uniId);
@@ -74,12 +83,12 @@ public class StudentController {
     // update with university id
     @PutMapping(path = "{uniId}/update")
     public void updateStudent(
-            @PathVariable("uniId") Long uniId,
-            @RequestParam(required = false) String first_name,
-            @RequestParam(required = false) String last_name,
-            @RequestParam(required = false) List<String> courses,
-            @RequestParam(required = false) Long nationalId,
-            @RequestParam(required = false) Long universityId
+            @PathVariable("uniId") @Min(1111111) Long uniId,
+            @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 15) String first_name,
+            @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 25) String last_name,
+            @RequestParam(required = false) @NotEmpty List<String> courses,
+            @RequestParam(required = false) @Min(1111111111) Long nationalId,
+            @RequestParam(required = false) @Min(1111111) Long universityId
     ) {
         service.updateStudent(uniId, first_name, last_name, courses, nationalId, universityId);
     }
@@ -87,9 +96,9 @@ public class StudentController {
     // add course for student
     @PutMapping(path = "{uniId}/score/{courseName}")
     public void addScoreCourse(
-            @PathVariable("uniId") Long uniId,
-            @PathVariable("courseName") String courseName,
-            @RequestParam Double score
+            @PathVariable("uniId") @Min(1111111) Long uniId,
+            @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
+            @RequestParam @Min(0) @Max(20) Double score
     ) {
         service.addScoreCourse(uniId, courseName, score);
     }
@@ -97,8 +106,8 @@ public class StudentController {
     // delete course for student
     @PutMapping(path = "{uniId}/course/delete")
     public void deleteStudentCourse(
-            @PathVariable("uniId") Long uniId,
-            @RequestParam String courseName
+            @PathVariable("uniId") @Min(1111111) Long uniId,
+            @RequestParam @NotEmpty @Size(min = 1, max = 20) String courseName
     ) {
         service.deleteStudentCourse(uniId, courseName);
     }

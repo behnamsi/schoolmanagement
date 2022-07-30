@@ -6,6 +6,9 @@ import com.behnam.school.management.student.Student;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -20,6 +23,9 @@ public class College {
     @Column(updatable = false)
     private Long collegeId;
     @Column(nullable = false, length = 20, unique = true)
+    @NotEmpty
+    @NotNull
+    @Size(min = 1, max = 20)
     private String collegeName;
     @OneToMany(mappedBy = "studentCollege", cascade = CascadeType.MERGE, fetch = FetchType.LAZY,
             orphanRemoval = true)
