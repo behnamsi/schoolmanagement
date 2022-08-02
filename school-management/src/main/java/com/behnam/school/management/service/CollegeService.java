@@ -49,12 +49,13 @@ public class CollegeService {
         return collegeDTOS;
     }
 
-    public void addCollege(CollegeDTO collegeDTO) {
+    public College addCollege(CollegeDTO collegeDTO) {
         // mapping to entity
         College college = new College();
         ModelMapper mapper = new ModelMapper();
         mapper.map(collegeDTO, college);
         repository.save(college);
+        return college;
     }
 
     @Transactional
