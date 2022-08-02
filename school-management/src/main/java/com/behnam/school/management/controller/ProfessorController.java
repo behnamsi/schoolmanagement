@@ -1,12 +1,12 @@
-package com.behnam.school.management.professor;
+package com.behnam.school.management.controller;
 
 
-import com.behnam.school.management.student.Student;
+import com.behnam.school.management.dto.ProfessorDTO;
+import com.behnam.school.management.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.sampled.Port;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -64,7 +64,7 @@ public class ProfessorController {
     }
 
     // get students of a course of professor
-    @GetMapping(path = "{professorId}/students/courses/{courseName}")
+    @GetMapping(path = "{professorId}/courses/{courseName}/students")
     public List<String> getProfessorStudentsByCourse(
             @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
             @PathVariable("professorId") @Min(1) Long professorId
@@ -72,7 +72,7 @@ public class ProfessorController {
         return service.getProfessorStudentsByCourse(professorId, courseName);
     }
 
-    @GetMapping(path = "{professorId}/students/courses/{courseName}/averages")
+    @GetMapping(path = "{professorId}/courses/{courseName}/students/averages")
     public List<String> getProfessorStudentsAverageByCourse(
             @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
             @PathVariable("professorId") @Min(1) Long professorId
@@ -83,7 +83,7 @@ public class ProfessorController {
 
     //POST methods:
 
-    @PostMapping(path = "add")
+    @PostMapping
     public void addProfessor(
             @Valid @RequestBody ProfessorDTO professor,
             @RequestParam() @Min(1) Long collegeId
@@ -91,14 +91,14 @@ public class ProfessorController {
         service.addProfessor(professor, collegeId);
     }
 
-    @DeleteMapping(path = "{profId}/delete")
+    @DeleteMapping(path = "{profId}")
     public void deleteProfessor(
             @PathVariable("profId") @Min(1) Long id
     ) {
         service.deleteProfessor(id);
     }
 
-    @PutMapping(path = "{profId}/update")
+    @PutMapping(path = "{profId}")
     public void updateProfessor(
             @PathVariable("profId") @Min(1) Long id,
             @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 15) String first_name,

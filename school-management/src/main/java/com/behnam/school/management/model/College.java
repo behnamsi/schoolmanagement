@@ -1,9 +1,4 @@
-package com.behnam.school.management.college;
-
-import com.behnam.school.management.course.Course;
-import com.behnam.school.management.professor.Professor;
-import com.behnam.school.management.student.Student;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.behnam.school.management.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -39,6 +34,7 @@ public class College {
 
     public College() {
     }
+
 
     public Long getCollegeId() {
         return collegeId;

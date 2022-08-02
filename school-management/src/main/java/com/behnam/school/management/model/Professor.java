@@ -1,8 +1,5 @@
-package com.behnam.school.management.professor;
+package com.behnam.school.management.model;
 
-import com.behnam.school.management.college.College;
-import com.behnam.school.management.course.Course;
-import com.behnam.school.management.student.Student;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

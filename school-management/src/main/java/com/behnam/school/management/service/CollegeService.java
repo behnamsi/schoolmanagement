@@ -1,5 +1,8 @@
-package com.behnam.school.management.college;
+package com.behnam.school.management.service;
 
+import com.behnam.school.management.dto.CollegeDTO;
+import com.behnam.school.management.model.College;
+import com.behnam.school.management.repository.CollegeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

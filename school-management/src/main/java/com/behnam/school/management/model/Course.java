@@ -1,8 +1,5 @@
-package com.behnam.school.management.course;
+package com.behnam.school.management.model;
 
-import com.behnam.school.management.college.College;
-import com.behnam.school.management.professor.Professor;
-import com.behnam.school.management.student.Student;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -107,6 +104,10 @@ public class Course {
 
     public void setEnrolled_students(List<Student> enrolled_students) {
         this.enrolled_students = enrolled_students;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     @Override

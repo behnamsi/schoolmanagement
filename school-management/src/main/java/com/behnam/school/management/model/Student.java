@@ -1,11 +1,10 @@
-package com.behnam.school.management.student;
+package com.behnam.school.management.model;
 
-import com.behnam.school.management.college.College;
-import com.behnam.school.management.course.Course;
-import com.behnam.school.management.professor.Professor;
+import com.behnam.school.management.model.College;
+import com.behnam.school.management.model.Course;
+import com.behnam.school.management.model.Professor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -106,6 +105,10 @@ public class Student {
     public Student() {
     }
 
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
 
     public Map<String, Double> getScores() {
         return scores;

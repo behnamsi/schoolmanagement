@@ -1,9 +1,12 @@
-package com.behnam.school.management.course;
+package com.behnam.school.management.service;
 
-import com.behnam.school.management.college.College;
-import com.behnam.school.management.college.CollegeRepository;
-import com.behnam.school.management.professor.Professor;
-import com.behnam.school.management.professor.ProfessorRepository;
+import com.behnam.school.management.dto.CourseDTO;
+import com.behnam.school.management.model.College;
+import com.behnam.school.management.model.Course;
+import com.behnam.school.management.repository.CollegeRepository;
+import com.behnam.school.management.model.Professor;
+import com.behnam.school.management.repository.ProfessorRepository;
+import com.behnam.school.management.repository.CourseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,11 +1,15 @@
-package com.behnam.school.management.student;
+package com.behnam.school.management.service;
 
-import com.behnam.school.management.college.College;
-import com.behnam.school.management.college.CollegeRepository;
-import com.behnam.school.management.course.Course;
-import com.behnam.school.management.course.CourseRepository;
-import com.behnam.school.management.professor.Professor;
+import com.behnam.school.management.dto.StudentDTO;
+import com.behnam.school.management.model.College;
+import com.behnam.school.management.model.Student;
+import com.behnam.school.management.repository.CollegeRepository;
+import com.behnam.school.management.model.Course;
+import com.behnam.school.management.repository.CourseRepository;
+import com.behnam.school.management.model.Professor;
+import com.behnam.school.management.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -17,12 +21,14 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
+
     private final StudentRepository repository;
+
     private final CollegeRepository collegeRepository;
+
     private final CourseRepository courseRepository;
 
     @Autowired
@@ -55,13 +61,14 @@ public class StudentService {
     }
 
 
-    public void addStudent(StudentDTO studentDTO, Long collegeId) {
+    public Student addStudent(StudentDTO studentDTO, Long collegeId) {
         if (collegeId != null) {
             College college = collegeRepository.findById(collegeId).orElseThrow(() ->
                     new IllegalStateException("invalid college id"));
             // mapping to entity
             Student student = new Student();
             ModelMapper mapper = new ModelMapper();
+            mapper.getConfiguration().setAmbiguityIgnored(true);
             mapper.map(studentDTO, student);
             Optional<Student> studentUniId = repository.findStudentByUniversityIdOptional(student.getUniversityId());
             Optional<Student> studentnatId = repository.findStudentByNationalId(student.getNationalId());
@@ -74,18 +81,19 @@ public class StudentService {
 
             student.setStudentCollege(college);
             repository.save(student);
+            return student;
         } else {
             throw new IllegalStateException("college id can not be null");
         }
     }
 
-    @Transactional
-    public void deleteStudent(Long id) {
-        if (!repository.existsById(id)) {
-            throw new IllegalStateException("student with this Id does not exists.");
-        }
-        repository.deleteById(id);
-    }
+//    @Transactional
+//    public void deleteStudent(Long id) {
+//        if (!repository.existsById(id)) {
+//            throw new IllegalStateException("student with this Id does not exists.");
+//        }
+//        repository.deleteById(id);
+//    }
 
     @Transactional
     public void deleteStudentByUniId(Long uniId) {
@@ -96,8 +104,8 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(Long uniId, String first_name, String last_name, List<String> courses,
-                              Long nationalId, Long universityId) {
+    public Student updateStudent(Long uniId, String first_name, String last_name, List<String> courses,
+                                 Long nationalId) {
         if (!repository.existsByUniversityId(uniId)) {
             throw new IllegalStateException("invalid university id");
         }
@@ -106,10 +114,6 @@ public class StudentService {
         Optional<Student> studentByNationalId = repository.findStudentByNationalId(nationalId);
         if (studentByNationalId.isPresent()) {
             throw new IllegalStateException("national id has a owner");
-        }
-        Optional<Student> studentByUniversityId = repository.findStudentByUniversityIdOptional(universityId);
-        if (studentByUniversityId.isPresent()) {
-            throw new IllegalStateException("university id has a owner");
         }
 
         if (first_name != null && first_name.length() > 0 &&
@@ -121,13 +125,14 @@ public class StudentService {
             student.setLastName(last_name);
         }
         if (!courses.isEmpty()) {
-            List<Course> courses1 = new ArrayList<>(student.getStudentCourses());
+            List<Course> courses1 = new ArrayList<>();
+            if (student.getStudentCourses() != null) courses1.addAll(student.getStudentCourses());
             List<Professor> professorsOfStudent = new ArrayList<>();
             for (String courseName : courses) {
-                Course course = courseRepository.findCourseByCourseName(courseName);
                 if (!courseRepository.existsCourseByCourseName(courseName)) {
                     throw new IllegalStateException("invalid course name");
                 }
+                Course course = courseRepository.findCourseByCourseName(courseName);
                 professorsOfStudent.add(course.getProfessor());
                 courses1.add(course);
                 student.setStudentCourses(courses1);
@@ -138,10 +143,7 @@ public class StudentService {
                 !Objects.equals(student.getLastName(), last_name)) {
             student.setNationalId(nationalId);
         }
-        if (universityId != null &&
-                !Objects.equals(student.getUniversityId(), universityId)) {
-            student.setUniversityId(universityId);
-        }
+        return student;
     }
 
     @Transactional
@@ -190,7 +192,7 @@ public class StudentService {
     // delete a course of a student
     @Transactional
     public void deleteStudentCourse(Long uniId, String courseName) {
-
+        //TODO drop the professor of that course.
         if (!repository.existsByUniversityId(uniId)) {
             throw new IllegalStateException("invalid university id");
         }
@@ -199,7 +201,7 @@ public class StudentService {
         }
         Student student = repository.findStudentByUniversityId(uniId);
         boolean courseFlag = false;
-        List<Course> courseList = student.getStudentCourses();
+        List<Course> courseList = new LinkedList<>(student.getStudentCourses());
         for (int i = 0; i < courseList.size(); i++) {
             if (courseList.get(i).getCourseName().equals(courseName)) {
                 courseFlag = true;
@@ -220,6 +222,7 @@ public class StudentService {
         }
         student.setScores(studentScoresMap);
     }
+
     @Transactional
     public Double getStudentAverage(Long uniID) {
         if (!repository.existsByUniversityId(uniID)) {
@@ -227,8 +230,8 @@ public class StudentService {
         }
         Student student = repository.findStudentByUniversityId(uniID);
 
-        List<Course> courses = student.getStudentCourses();
-        Map<String, Double> scores = student.getScores();
+        List<Course> courses = new ArrayList<>(student.getStudentCourses());
+        Map<String, Double> scores = new HashMap<>(student.getScores());
         if (courses.size() == 0) {
             throw new IllegalStateException("no courses taken");
         }
@@ -243,5 +246,15 @@ public class StudentService {
         }
         result = sum / numOfUnits;
         return result;
+    }
+
+    public StudentDTO getStudent(Long studentUniId) {
+        if (!repository.existsByUniversityId(studentUniId)) {
+            throw new IllegalStateException("invalid uni id");
+        }
+        Student student = repository.findStudentByUniversityId(studentUniId);
+        StudentDTO studentDTO = new StudentDTO();
+        BeanUtils.copyProperties(student, studentDTO);
+        return studentDTO;
     }
 }

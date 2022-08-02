@@ -1,13 +1,12 @@
 package com.behnam.school.management.professor;
 
+import com.behnam.school.management.dto.ProfessorDTO;
+import com.behnam.school.management.service.ProfessorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ProfessorServiceTest {

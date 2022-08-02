@@ -1,4 +1,4 @@
-package com.behnam.school.management.course;
+package com.behnam.school.management.dto;
 
 import javax.validation.constraints.*;
 

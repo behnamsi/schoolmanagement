@@ -1,8 +1,6 @@
 package com.behnam.school.management;
 
-import com.behnam.school.management.college.College;
-import com.behnam.school.management.student.Student;
-import com.behnam.school.management.student.StudentRepository;
+import com.behnam.school.management.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

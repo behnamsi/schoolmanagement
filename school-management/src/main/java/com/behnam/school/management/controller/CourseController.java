@@ -1,6 +1,7 @@
-package com.behnam.school.management.course;
+package com.behnam.school.management.controller;
 
-import com.behnam.school.management.professor.Professor;
+import com.behnam.school.management.dto.CourseDTO;
+import com.behnam.school.management.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class CourseController {
         return service.getAllCourses(page, limit);
     }
 
-    @PostMapping(path = "add")
+    @PostMapping
     public void addCourse(@Valid @RequestBody CourseDTO course,
                           @RequestParam() @Min(1) Long professorId,
                           @RequestParam() @Min(1) Long collegeId
@@ -34,21 +35,21 @@ public class CourseController {
         service.addCourse(course, professorId, collegeId);
     }
 
-    @DeleteMapping("{courseName}/delete-name")
+    @DeleteMapping("{courseName}")
     public void deleteCourseByName(
             @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName
     ) {
         service.deleteCourseByName(courseName);
     }
 
-    @DeleteMapping(path = "{courseId}/delete-id")
-    public void deleteCourseById(
-            @PathVariable("courseId") @Min(1) Long courseId
-    ) {
-        service.deleteCourseById(courseId);
-    }
+//    @DeleteMapping(path = "{courseId}/delete-id")
+//    public void deleteCourseById(
+//            @PathVariable("courseId") @Min(1) Long courseId
+//    ) {
+//        service.deleteCourseById(courseId);
+//    }
 
-    @PutMapping(path = "{courseId}/update")
+    @PutMapping(path = "{courseId}")
     public void updateCourse(
             @PathVariable("courseId") @Min(1) Long courseId,
             @RequestParam(required = false) @NotEmpty @Size(min = 1, max = 20) String courseName,

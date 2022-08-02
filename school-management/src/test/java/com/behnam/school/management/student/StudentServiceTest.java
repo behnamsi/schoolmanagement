@@ -1,16 +1,15 @@
 package com.behnam.school.management.student;
 
+import com.behnam.school.management.dto.StudentDTO;
+import com.behnam.school.management.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.annotation.Validated;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Validated
@@ -47,10 +46,6 @@ class StudentServiceTest {
         service.addStudent(studentDTO, 1L);
     }
 
-    @Test
-    void deleteStudentById() {
-        service.deleteStudent(14L);
-    }
 
     @Test
     void deleteStudentByUniId() {
@@ -65,9 +60,7 @@ class StudentServiceTest {
         courses.add("algorithem");
         courses.add("java");
         Long nationalId = null;
-        Long universituId = null;
-
-        service.updateStudent(22L, firstName, lastName, courses, nationalId, universituId);
+        service.updateStudent(22L, firstName, lastName, courses, nationalId);
     }
 
     @Test

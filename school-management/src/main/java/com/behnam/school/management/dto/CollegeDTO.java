@@ -1,4 +1,4 @@
-package com.behnam.school.management.college;
+package com.behnam.school.management.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

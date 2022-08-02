@@ -1,5 +1,6 @@
-package com.behnam.school.management.professor;
+package com.behnam.school.management.repository;
 
+import com.behnam.school.management.model.Professor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
