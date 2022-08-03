@@ -1,6 +1,7 @@
 package com.behnam.school.management.student;
 
 import com.behnam.school.management.dto.StudentDTO;
+import com.behnam.school.management.newDto.StudentDto;
 import com.behnam.school.management.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ class StudentServiceTest {
 
     @Test
     void getAllStudents() {
-        List<StudentDTO> studentDTOS = service.getAllStudents(15, 1);
+        List<StudentDto> studentDTOS = service.getAllStudents(15, 1);
         System.out.println("studentDTOS = " + studentDTOS);
     }
 
@@ -38,7 +39,7 @@ class StudentServiceTest {
 
     @Test
     void addStudent() {
-        @Valid  StudentDTO studentDTO = new StudentDTO();
+        StudentDto studentDTO = new StudentDto();
         studentDTO.setFirstName("abbas23");
         studentDTO.setLastName("bu azar23");
         studentDTO.setUniversityId(2213438L);

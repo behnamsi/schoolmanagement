@@ -66,6 +66,17 @@ public class Professor {
     public Professor() {
     }
 
+    public Professor(String firstName, String lastName, Long personalId, Long nationalId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalId = personalId;
+        this.nationalId = nationalId;
+    }
+
+    public void setProfessorId(Long professorId) {
+        this.professorId = professorId;
+    }
+
     public Long getProfessorId() {
         return professorId;
     }

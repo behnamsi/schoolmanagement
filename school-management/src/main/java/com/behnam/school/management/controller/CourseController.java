@@ -1,6 +1,7 @@
 package com.behnam.school.management.controller;
 
 import com.behnam.school.management.dto.CourseDTO;
+import com.behnam.school.management.newDto.CourseDto;
 import com.behnam.school.management.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<CourseDTO> getAllCourses(
+    public List<CourseDto> getAllCourses(
             @RequestParam(required = false) @Min(1) Integer page,
             @RequestParam(required = false) @Min(1) Integer limit
     ) {
@@ -28,11 +29,11 @@ public class CourseController {
     }
 
     @PostMapping
-    public void addCourse(@Valid @RequestBody CourseDTO course,
-                          @RequestParam() @Min(1) Long professorId,
-                          @RequestParam() @Min(1) Long collegeId
+    public void addCourse(@Valid @RequestBody CourseDto courseDto,
+                          @RequestParam() @NotNull @Min(1) Long professorId,
+                          @RequestParam() @NotNull @Min(1) Long collegeId
     ) {
-        service.addCourse(course, professorId, collegeId);
+        service.addCourse(courseDto, professorId, collegeId);
     }
 
     @DeleteMapping("{courseName}")
@@ -53,8 +54,8 @@ public class CourseController {
     public void updateCourse(
             @PathVariable("courseId") @Min(1) Long courseId,
             @RequestParam(required = false) @NotEmpty @Size(min = 1, max = 20) String courseName,
-            @RequestParam(required = false) @Min(1) @Max(3) Integer unitNumber,
-            @RequestParam(required = false) @Min(1) Long professorId
+            @RequestParam(required = false) @NotNull @Min(1) @Max(3) Integer unitNumber,
+            @RequestParam(required = false) @NotNull @Min(1) Long professorId
     ) {
         service.updateCourse(courseId, courseName, unitNumber, professorId);
     }

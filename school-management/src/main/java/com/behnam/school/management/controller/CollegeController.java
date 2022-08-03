@@ -1,6 +1,7 @@
 package com.behnam.school.management.controller;
 
 import com.behnam.school.management.dto.CollegeDTO;
+import com.behnam.school.management.newDto.CollegeDto;
 import com.behnam.school.management.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class CollegeController {
     }
 
     @GetMapping
-    public List<CollegeDTO> getAllColleges(
+    public List<CollegeDto> getAllColleges(
             @RequestParam(required = false) @Min(1) Integer page,
             @RequestParam(required = false) @Min(1) Integer limit
     ) {
@@ -31,8 +32,8 @@ public class CollegeController {
     }
 
     @PostMapping("")
-    public void addCollege(@Valid @RequestBody CollegeDTO college) {
-        service.addCollege(college);
+    public void addCollege(@Valid @RequestBody CollegeDto collegeDto) {
+        service.addCollege(collegeDto);
     }
 
     @DeleteMapping(path = "{collegeId}/delete-id")

@@ -2,8 +2,10 @@ package com.behnam.school.management.service;
 
 
 import com.behnam.school.management.dto.ProfessorDTO;
+import com.behnam.school.management.mapper.ProfessorMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Professor;
+import com.behnam.school.management.newDto.ProfessorDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.repository.ProfessorRepository;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProfessorService {
@@ -34,35 +39,32 @@ public class ProfessorService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<ProfessorDTO> getAllProfessors(Integer page, Integer limit) {
+    public List<ProfessorDto> getAllProfessors(Integer page, Integer limit) {
         // limit and paging filter
         if (limit == null) limit = 3;
-        if (page == null || page == 0) page = 0;
+        if (page == null) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
         // paging and sorting data
-        Pageable professorPageable = PageRequest.of(page, limit, Sort.by("lastName").descending());
+        Pageable professorPageable = PageRequest.of(page, limit, Sort.by("lastName").ascending());
         Page<Professor> professorPage = repository.findAll(professorPageable);
         // mapping to dto
-        ModelMapper modelMapper = new ModelMapper();
-        List<ProfessorDTO> professorDTOS = new ArrayList<>();
-        for (Professor professor :
-                professorPage.getContent()) {
-            ProfessorDTO professorDTO = new ProfessorDTO();
-            modelMapper.map(professor, professorDTO);
-            professorDTOS.add(professorDTO);
-        }
-        return professorDTOS;
+        ProfessorMapper mapper = new ProfessorMapper();
+        return professorPage
+                .getContent()
+                .stream()
+                .map(mapper::professorToDto)
+                .collect(toList());
     }
 
-    public void addProfessor(ProfessorDTO professorDTO, Long collegeId) {
+    public void addProfessor(ProfessorDto professorDto, Long collegeId) {
         if (collegeId != null) {
             College college = collegeRepository.findById(collegeId).orElseThrow(() ->
                     new IllegalStateException("invalid college id"));
             // mapping to entity
-            Professor professor = new Professor();
-            ModelMapper mapper = new ModelMapper();
-            mapper.map(professorDTO, professor);
+            Professor professor;
+            ProfessorMapper mapper = new ProfessorMapper();
+            professor = mapper.dtoTOProfessor(professorDto);
             // check for national and personal id
             Optional<Professor> professorNationalId = repository.findProfessorByNationalId
                     (professor.getNationalId());
@@ -71,7 +73,6 @@ public class ProfessorService {
             if (professorNationalId.isPresent() || professorPersonalId.isPresent()) {
                 throw new IllegalStateException("personal id or national id is taken");
             }
-
             professor.setProfessorCollege(college);
             repository.save(professor);
         }
@@ -115,6 +116,7 @@ public class ProfessorService {
             professor.setPersonalId(personalId);
         }
     }
+
     @Transactional
     public List<String> getProfessorStudents(Long professorId) {
         Professor professor = repository.findById(professorId).orElseThrow(
@@ -126,6 +128,7 @@ public class ProfessorService {
         }
         return studentsName;
     }
+
     @Transactional
     public List<String> getProfessorStudentsAverages(Long professorId) {
         Professor professor = repository.findById(professorId).orElseThrow(
@@ -150,6 +153,7 @@ public class ProfessorService {
         }
         return studentsAverageList;
     }
+
     @Transactional
     public List<String> getProfessorsCourses(Long professorId) {
 
@@ -163,6 +167,7 @@ public class ProfessorService {
         return professorCourses;
 
     }
+
     @Transactional
     public List<String> getProfessorStudentsByCourse(Long professorId, String courseName) {
 
@@ -188,6 +193,7 @@ public class ProfessorService {
         return studentsNames;
 
     }
+
     @Transactional
     public List<String> getProfessorStudentsAverageByCourse(Long professorId, String courseName) {
         Professor professor = repository.findById(professorId).orElseThrow(

@@ -1,7 +1,9 @@
 package com.behnam.school.management.service;
 
 import com.behnam.school.management.dto.CollegeDTO;
+import com.behnam.school.management.mapper.CollegeMapper;
 import com.behnam.school.management.model.College;
+import com.behnam.school.management.newDto.CollegeDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,33 +29,26 @@ public class CollegeService {
         this.repository = repository;
     }
 
-    public List<CollegeDTO> getAllColleges(Integer page, Integer limit) {
+    public List<CollegeDto> getAllColleges(Integer page, Integer limit) {
+        CollegeMapper mapper = new CollegeMapper();
         // page and limit filters
         if (limit == null) limit = 3;
-        if (page == null || page == 0) page = 0;
+        if (page == null) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
         // paging and sorting and getting the data
-        Pageable collegePageable = PageRequest.of(page, limit, Sort.by("collegeName").descending());
-        Page<College> collegePage = repository.findAll(collegePageable);
-        // mapping  to dto
-        List<CollegeDTO> collegeDTOS = new ArrayList<>();
-        ModelMapper mapper = new ModelMapper();
-        for (College college :
-                collegePage.getContent()) {
-            CollegeDTO collegeDTO = new CollegeDTO();
-            mapper.map(college, collegeDTO);
-            collegeDTOS.add(collegeDTO);
-        }
-        //returning
-        return collegeDTOS;
+        Pageable collegePageable = PageRequest.of(page, limit, Sort.by("collegeName").ascending());
+        Page<College> collegeList = repository.findAll(collegePageable);
+        return collegeList
+                .getContent()
+                .stream()
+                .map(mapper::toCollegeDto)
+                .toList();
     }
 
-    public College addCollege(CollegeDTO collegeDTO) {
-        // mapping to entity
-        College college = new College();
-        ModelMapper mapper = new ModelMapper();
-        mapper.map(collegeDTO, college);
+    public College addCollege(CollegeDto collegeDto) {
+        CollegeMapper mapper = new CollegeMapper();
+        College college = mapper.toCollege(collegeDto);
         repository.save(college);
         return college;
     }

@@ -1,8 +1,10 @@
 package com.behnam.school.management.service;
 
 import com.behnam.school.management.dto.CourseDTO;
+import com.behnam.school.management.mapper.CourseMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Course;
+import com.behnam.school.management.newDto.CourseDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.model.Professor;
 import com.behnam.school.management.repository.ProfessorRepository;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class CourseService {
 
@@ -34,40 +38,33 @@ public class CourseService {
         this.collegeRepository = collegeRepository;
     }
 
-    public List<CourseDTO> getAllCourses(Integer page, Integer limit) {
+    public List<CourseDto> getAllCourses(Integer page, Integer limit) {
+        CourseMapper mapper=new CourseMapper();
         // limit and paging filters
         if (limit == null) limit = 3;
         if (page == null) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit can not be more than 100");
         // paging and sorting data
-        Pageable coursePageable = PageRequest.of(page, limit, Sort.by("courseName").descending());
+        Pageable coursePageable = PageRequest.of(page, limit, Sort.by("courseName").ascending());
         Page<Course> coursePage = repository.findAll(coursePageable);
-        // mapping data to dto
-        List<CourseDTO> courseDTOS = new ArrayList<>();
-        ModelMapper mapper = new ModelMapper();
-        for (Course course :
-                coursePage.getContent()) {
-            CourseDTO courseDTO = new CourseDTO();
-            mapper.map(course, courseDTO);
-            courseDTOS.add(courseDTO);
-        }
-        return courseDTOS;
-//        return coursePage.getContent();
-        //        return repository.findAll();
-
+        return coursePage
+                .getContent()
+                .stream()
+                .map(mapper::courseToDto)
+                .collect(toList());
     }
 
-    public void addCourse(CourseDTO courseDTO, Long professorId, Long collegeId) {
+    public void addCourse(CourseDto courseDto, Long professorId, Long collegeId) {
         if (professorId != null && collegeId != null) {
             Professor professor = professorRepository.findById(professorId).
                     orElseThrow(() -> new IllegalStateException("invalid professor id"));
             College college = collegeRepository.findById(collegeId).orElseThrow(() ->
                     new IllegalStateException("invalid college id"));
             // mapping to entity
-            Course course = new Course();
-            ModelMapper mapper = new ModelMapper();
-            mapper.map(courseDTO, course);
+            CourseMapper mapper = new CourseMapper();
+            Course course;
+            course = mapper.dtoToCourse(courseDto);
             course.setProfessor(professor);
             course.setCourseCollege(college);
             repository.save(course);
@@ -85,13 +82,13 @@ public class CourseService {
         repository.deleteCourseByCourseName(courseName);
     }
 
-    @Transactional
-    public void deleteCourseById(Long courseId) {
-        if (!repository.existsById(courseId)) {
-            throw new IllegalStateException("this course id is invalid");
-        }
-        repository.deleteById(courseId);
-    }
+//    @Transactional
+//    public void deleteCourseById(Long courseId) {
+//        if (!repository.existsById(courseId)) {
+//            throw new IllegalStateException("this course id is invalid");
+//        }
+//        repository.deleteById(courseId);
+//    }
 
     @Transactional
     public void updateCourse(Long courseId, String courseName, Integer unitNumber, Long professorId) {

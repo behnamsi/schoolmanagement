@@ -1,6 +1,7 @@
 package com.behnam.school.management.controller;
 
 import com.behnam.school.management.dto.StudentDTO;
+import com.behnam.school.management.newDto.StudentDto;
 import com.behnam.school.management.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +31,7 @@ public class StudentController {
 
     // get the all of students
     @GetMapping
-    public List<StudentDTO> getAllStudents(
+    public List<StudentDto> getAllStudents(
             @RequestParam(required = false) @Min(1) Integer limit,
             @RequestParam(required = false) @Min(1) Integer page
     ) {
@@ -62,7 +63,7 @@ public class StudentController {
     //POST methods
     @PostMapping
     public void addStudent(
-            @Valid @RequestBody StudentDTO student,
+            @Valid @RequestBody StudentDto student,
             @RequestParam @Min(1) Long collegeId
     ) {
         service.addStudent(student, collegeId);

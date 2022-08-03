@@ -2,6 +2,7 @@ package com.behnam.school.management.controller;
 
 
 import com.behnam.school.management.dto.ProfessorDTO;
+import com.behnam.school.management.newDto.ProfessorDto;
 import com.behnam.school.management.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ProfessorController {
 
     //get All Professors
     @GetMapping
-    public List<ProfessorDTO> getAllProfessors(
+    public List<ProfessorDto> getAllProfessors(
             @RequestParam(required = false) @Min(1) Integer limit,
             @RequestParam(required = false) @Min(1) Integer page
     ) {
@@ -85,10 +87,10 @@ public class ProfessorController {
 
     @PostMapping
     public void addProfessor(
-            @Valid @RequestBody ProfessorDTO professor,
-            @RequestParam() @Min(1) Long collegeId
+            @Valid @RequestBody ProfessorDto professorDto,
+            @RequestParam() @NotNull @Min(1) Long collegeId
     ) {
-        service.addProfessor(professor, collegeId);
+        service.addProfessor(professorDto, collegeId);
     }
 
     @DeleteMapping(path = "{profId}")

@@ -1,8 +1,10 @@
 package com.behnam.school.management.service;
 
 import com.behnam.school.management.dto.StudentDTO;
+import com.behnam.school.management.mapper.StudentMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Student;
+import com.behnam.school.management.newDto.StudentDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.repository.CourseRepository;
@@ -21,6 +23,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class StudentService {
@@ -38,10 +43,10 @@ public class StudentService {
         this.courseRepository = courseRepository;
     }
 
-    public List<StudentDTO> getAllStudents(Integer limit, Integer page) {
+    public List<StudentDto> getAllStudents(Integer limit, Integer page) {
         // limit and page filter
         if (limit == null) limit = 3;
-        if (page == null || page == 0) page = 0;
+        if (page == null) page = 0;
         else page -= 1;
         if (limit > 100) throw new IllegalStateException("limit should not be more than 100");
         // paging nad sorting data
@@ -49,33 +54,29 @@ public class StudentService {
                 PageRequest.of(page, limit, Sort.by("lastName").descending());
         Page<Student> studentPage = repository.findAll(studentPageable);
         // mapping data to dto
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
-        for (Student student :
-                studentPage.getContent()) {
-            StudentDTO studentDTO = new StudentDTO();
-            modelMapper.map(student, studentDTO);
-            studentDTOS.add(studentDTO);
-        }
-        return studentDTOS;
+        StudentMapper mapper = new StudentMapper();
+        return studentPage
+                .getContent()
+                .stream()
+                .map(mapper::studentToDto)
+                .collect(toList());
     }
 
 
-    public Student addStudent(StudentDTO studentDTO, Long collegeId) {
+    public Student addStudent(StudentDto studentDto, Long collegeId) {
         if (collegeId != null) {
             College college = collegeRepository.findById(collegeId).orElseThrow(() ->
                     new IllegalStateException("invalid college id"));
             // mapping to entity
-            Student student = new Student();
-            ModelMapper mapper = new ModelMapper();
-            mapper.getConfiguration().setAmbiguityIgnored(true);
-            mapper.map(studentDTO, student);
+            Student student;
+            StudentMapper mapper = new StudentMapper();
+            student = mapper.dtoTOStudent(studentDto);
             Optional<Student> studentUniId = repository.findStudentByUniversityIdOptional(student.getUniversityId());
-            Optional<Student> studentnatId = repository.findStudentByNationalId(student.getNationalId());
+            Optional<Student> studentNatId = repository.findStudentByNationalId(student.getNationalId());
             if (studentUniId.isPresent()) {
                 throw new IllegalStateException("university id is taken");
             }
-            if (studentnatId.isPresent()) {
+            if (studentNatId.isPresent()) {
                 throw new IllegalStateException("national id is taken");
             }
 

@@ -2,8 +2,8 @@ package com.behnam.school.management.service;
 
 import com.behnam.school.management.dto.CollegeDTO;
 import com.behnam.school.management.model.College;
+import com.behnam.school.management.newDto.CollegeDto;
 import com.behnam.school.management.repository.CollegeRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,11 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,52 +28,90 @@ class CollegeServiceUnitTest {
     @InjectMocks
     CollegeService service;
 
-    College college;
+    College college1;
+    College college2;
+    College college3;
+    CollegeDto collegeDto1;
+    CollegeDto collegeDto2;
+    CollegeDto collegeDto3;
 
     @BeforeEach
     void setUp() {
         service = new CollegeService(repository);
-        college = new College();
-        college.setCollegeId(1L);
-        college.setCollegeName("computer");
+        college1 = new College();
+        college2 = new College();
+        college3 = new College();
+        collegeDto1 = new CollegeDto("computer");
+        collegeDto2 = new CollegeDto("electronic");
+        collegeDto3 = new CollegeDto("math");
+        college1.setCollegeId(1L);
+        college2.setCollegeId(2L);
+        college3.setCollegeId(3L);
+        college1.setCollegeName("computer");
+        college2.setCollegeName("electronic");
+        college3.setCollegeName("math");
+
     }
 
     @Test
     void getAllColleges() {
-        Pageable pageable =
-                PageRequest.of(0, 3,
-                        Sort.by("collegeName").descending());
-
-        Page<College> collegePage = new PageImpl<>(List.of(college));
-        when(repository.findAll(pageable)).thenReturn(collegePage);
-        List<CollegeDTO> collegeDTOList = service.getAllColleges(
-                null,
-                null);
-        assertThat(collegeDTOList.get(0).getCollegeName()).isEqualTo("computer");
+        Pageable collegePageable = PageRequest.of(0, 3, Sort.by("collegeName").ascending());
+        Page<College> collegeList = new PageImpl<>(List.of(college1, college2,college3));
+        when(repository.findAll(collegePageable))
+                .thenReturn(collegeList);
+        List<CollegeDto> collegeDtoListExpected = new ArrayList<>(List.of(collegeDto1, collegeDto2, collegeDto3));
+        List<CollegeDto> collegeDTOListActual = service.getAllColleges(1, 3);
+        assertThat(collegeDTOListActual.size()).isEqualTo(collegeDtoListExpected.size());
+        System.out.println("collegeDTOListActual = " + collegeDTOListActual);
+        System.out.println("collegeDtoListExpected = " + collegeDtoListExpected);
+        assertThat(collegeDTOListActual.get(0).getName()).isEqualTo(collegeDtoListExpected.get(0).getName());
     }
 
     @Test
     void addCollege() {
-        CollegeDTO collegeDTO = new CollegeDTO();
-        BeanUtils.copyProperties(college, collegeDTO);
-        College savedCollege = service.addCollege(collegeDTO);
-        savedCollege.setCollegeId(1L);
-        assertThat(savedCollege).isNotNull();
-        assertThat(college.getCollegeName()).isEqualTo(savedCollege.getCollegeName());
+        College college = service.addCollege(collegeDto1);
+        assertThat(college.getCollegeName()).isEqualTo("computer");
+        assertThat(college).isInstanceOf(College.class);
     }
 
     @Test
     void deleteCollegeByCollegeName() {
-        when(repository.existsCollegeByCollegeName(college.getCollegeName()))
+        when(repository.existsCollegeByCollegeName(college1.getCollegeName()))
                 .thenReturn(true);
-        service.deleteCollegeByName(college.getCollegeName());
+        service.deleteCollegeByName(college1.getCollegeName());
     }
 
     @Test
     void updateCollege() {
-        when(repository.findById(college.getCollegeId()))
-                .thenReturn(Optional.ofNullable(college));
-        service.updateCollege(1L,"comp science");
-        assertThat(college.getCollegeName()).isEqualTo("comp science");
+        when(repository.findById(college1.getCollegeId()))
+                .thenReturn(Optional.ofNullable(college1));
+        service.updateCollege(1L, "comp science");
+        assertThat(college1.getCollegeName()).isEqualTo("comp science");
     }
+
+    // ----------------- NEW DTO TESTING -----------------
+
+//    @Test
+//    void shouldGetAllCollegesWithNewDto() {
+//        Pageable collegePageable = PageRequest.of(0, 3, Sort.by("collegeName").ascending());
+//        List<College> colleges=new ArrayList<>(List.of(college1, college2,college3));
+//        Page<College> collegeList = new PageImpl<>(colleges);
+//        when(repository.findAll(collegePageable))
+//                .thenReturn(collegeList);
+//
+//        List<CollegeDto> collegeDtoListExpected = new ArrayList<>(List.of(collegeDto1, collegeDto2, collegeDto3));
+//        List<CollegeDto> collegeDTOListActual = newService.getAllColleges(1, 3);
+//        assertThat(collegeDTOListActual.size()).isEqualTo(collegeDtoListExpected.size());
+//        System.out.println("collegeDTOListActual = " + collegeDTOListActual);
+//        System.out.println("collegeDtoListExpected = " + collegeDtoListExpected);
+//        assertThat(collegeDTOListActual.get(0).getName()).isEqualTo(collegeDtoListExpected.get(0).getName());
+//    }
+
+//    @Test
+//    void shouldAddCollegeWithNewDto() {
+//        College college = newService.addCollege(collegeDto1);
+//        assertThat(college.getCollegeName()).isEqualTo("computer");
+//    }
+
+
 }

@@ -1,9 +1,11 @@
 package com.behnam.school.management.service;
 
 import com.behnam.school.management.dto.StudentDTO;
+import com.behnam.school.management.mapper.StudentMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.model.Student;
+import com.behnam.school.management.newDto.StudentDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.repository.CourseRepository;
 import com.behnam.school.management.repository.StudentRepository;
@@ -107,7 +109,7 @@ public class StudentServiceUnitTest {
                 Arrays.asList(student1, student2, student3));
         Page<Student> studentPage = new PageImpl<>(studentList);
         when(studentRepository.findAll(pageable)).thenReturn(studentPage);
-        List<StudentDTO> expectedStudentDTOS = service.getAllStudents(null, null);
+        List<StudentDto> expectedStudentDTOS = service.getAllStudents(null, null);
         System.err.println("studentDTOS = " + expectedStudentDTOS);
         List<StudentDTO> actual = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
@@ -133,9 +135,9 @@ public class StudentServiceUnitTest {
         when(studentRepository.
                 findStudentByNationalId(student1.getNationalId()))
                 .thenReturn(Optional.empty());
-        StudentDTO studentDTO = new StudentDTO();
-        ModelMapper mapper = new ModelMapper();
-        mapper.map(student1, studentDTO);
+        StudentDto studentDTO = new StudentDto();
+        StudentMapper mapper = new StudentMapper();
+        student1 = mapper.dtoTOStudent(studentDTO);
         Student savedStudent = service
                 .addStudent(studentDTO, college.getCollegeId());
         savedStudent.setStudentId(student1.getStudentId());
@@ -249,10 +251,10 @@ public class StudentServiceUnitTest {
 
     @Test
     void shouldGetStudentAverage() {
-        student1.setStudentCourses(List.of(course1,course2));
-        Map<String,Double> score=new HashMap<>();
-        score.put("java",19.25);
-        score.put("python",18.5);
+        student1.setStudentCourses(List.of(course1, course2));
+        Map<String, Double> score = new HashMap<>();
+        score.put("java", 19.25);
+        score.put("python", 18.5);
         student1.setScores(score);
         when(studentRepository
                 .existsByUniversityId(student1.getUniversityId()))

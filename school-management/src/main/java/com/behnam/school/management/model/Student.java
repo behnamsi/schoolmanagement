@@ -105,6 +105,12 @@ public class Student {
     public Student() {
     }
 
+    public Student(String firstName, String lastName, Long nationalId, Long universityId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nationalId = nationalId;
+        this.universityId = universityId;
+    }
 
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
