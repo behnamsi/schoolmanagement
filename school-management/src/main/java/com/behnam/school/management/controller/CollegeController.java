@@ -1,7 +1,7 @@
 package com.behnam.school.management.controller;
 
-import com.behnam.school.management.dto.CollegeDTO;
-import com.behnam.school.management.newDto.CollegeDto;
+
+import com.behnam.school.management.dto.CollegeDto;
 import com.behnam.school.management.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +42,7 @@ public class CollegeController {
         service.deleteCollegeByID(collegeId);
     }
 
-    @DeleteMapping(path = "{collegeName}/")
+    @DeleteMapping(path = "{collegeName}")
     public void deleteCollegeByName(
             @PathVariable("collegeName") @NotEmpty @Size(min = 1, max = 20) String collegeName) {
         service.deleteCollegeByName(collegeName);

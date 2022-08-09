@@ -1,10 +1,28 @@
-package com.behnam.school.management.newDto;
+package com.behnam.school.management.dto;
 
+import com.behnam.school.management.validation.annotations.ValidProfessor;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@ValidProfessor
 public class ProfessorDto {
+    //    @NotNull
+//    @Size(min =3,max = 15)
     private String firstName;
+    //    @NotNull
+//    @Size(min =3,max = 25)
     private String lastName;
     private String collegeName;
+    //    @NotNull
+//    @Min(value = 1111111,message = "must be 7 digits ")
+//    @Digits(integer = 7, fraction = 0, message = "must be 7 digits")
     private Long personalId;
+    //    @NotNull
+//    @Min(value = 1111111111,message = "must be 10 digits")
+//    @Digits(integer = 10, fraction = 0, message = "must be 10 digits")
     private Long nationalId;
 
     public ProfessorDto() {

@@ -1,7 +1,7 @@
 package com.behnam.school.management.mapper;
 
 import com.behnam.school.management.model.Student;
-import com.behnam.school.management.newDto.StudentDto;
+import com.behnam.school.management.dto.StudentDto;
 
 public class StudentMapper {
     public StudentDto studentToDto(Student student){

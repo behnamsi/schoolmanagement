@@ -1,4 +1,4 @@
-package com.behnam.school.management.newDto;
+package com.behnam.school.management.dto;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

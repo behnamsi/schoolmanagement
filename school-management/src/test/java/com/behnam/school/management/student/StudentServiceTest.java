@@ -1,14 +1,13 @@
 package com.behnam.school.management.student;
 
-import com.behnam.school.management.dto.StudentDTO;
-import com.behnam.school.management.newDto.StudentDto;
+
+import com.behnam.school.management.dto.StudentDto;
 import com.behnam.school.management.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 

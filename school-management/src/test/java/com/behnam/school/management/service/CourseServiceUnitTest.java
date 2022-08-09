@@ -4,7 +4,7 @@ import com.behnam.school.management.mapper.CourseMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.model.Professor;
-import com.behnam.school.management.newDto.CourseDto;
+import com.behnam.school.management.dto.CourseDto;
 import com.behnam.school.management.repository.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +16,7 @@ import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

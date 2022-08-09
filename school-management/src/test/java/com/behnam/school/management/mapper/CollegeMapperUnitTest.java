@@ -1,7 +1,7 @@
 package com.behnam.school.management.mapper;
 
 import com.behnam.school.management.model.College;
-import com.behnam.school.management.newDto.CollegeDto;
+import com.behnam.school.management.dto.CollegeDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

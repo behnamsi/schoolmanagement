@@ -1,7 +1,10 @@
-package com.behnam.school.management.newDto;
+package com.behnam.school.management.dto;
+
+import com.behnam.school.management.validation.annotations.ValidCollege;
 
 import java.util.List;
 
+@ValidCollege
 public class CollegeDto {
     private String name;
     private List<String> courses;

@@ -1,15 +1,14 @@
 package com.behnam.school.management.service;
 
-import com.behnam.school.management.dto.StudentDTO;
+
 import com.behnam.school.management.mapper.StudentMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.model.Student;
-import com.behnam.school.management.newDto.StudentDto;
+import com.behnam.school.management.dto.StudentDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.repository.CourseRepository;
 import com.behnam.school.management.repository.StudentRepository;
-import com.behnam.school.management.service.StudentService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,16 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,6 +70,9 @@ public class StudentServiceUnitTest {
         college = new College();
         college.setCollegeId(1L);
         college.setCollegeName("computer");
+        student1.setStudentCollege(college);
+        student2.setStudentCollege(college);
+        student3.setStudentCollege(college);
         course1 = new Course();
         course2 = new Course();
         course1.setCourseId(1L);
@@ -92,10 +89,10 @@ public class StudentServiceUnitTest {
                 .thenReturn(true);
         when(studentRepository.findStudentByUniversityId(student1.getStudentId()))
                 .thenReturn(student1);
-        StudentDTO studentDTO = new StudentDTO();
-        ModelMapper mapper = new ModelMapper();
-        mapper.map(student1, studentDTO);
-        StudentDTO studentDTO1 = service.getStudent(student1.getStudentId());
+        StudentDto studentDTO = new StudentDto();
+        StudentMapper mapper = new StudentMapper();
+        studentDTO=mapper.studentToDto(student1);
+        StudentDto studentDTO1 = service.getStudent(student1.getStudentId());
         System.err.println("studentDTO1 = " + studentDTO1);
         Assertions.assertThat(studentDTO1).isNotNull();
         assertThat(studentDTO1.getFirstName()).isEqualTo("Behnam1");
@@ -110,15 +107,13 @@ public class StudentServiceUnitTest {
         Page<Student> studentPage = new PageImpl<>(studentList);
         when(studentRepository.findAll(pageable)).thenReturn(studentPage);
         List<StudentDto> expectedStudentDTOS = service.getAllStudents(null, null);
-        System.err.println("studentDTOS = " + expectedStudentDTOS);
-        List<StudentDTO> actual = new ArrayList<>();
-        ModelMapper mapper = new ModelMapper();
-        for (Student student :
-                studentList) {
-            StudentDTO studentDTO = new StudentDTO();
-            mapper.map(student, studentDTO);
-            actual.add(studentDTO);
-        }
+        System.err.println("expectedStudentDTOS = " + expectedStudentDTOS);
+        StudentMapper mapper = new StudentMapper();
+        List<StudentDto> actual = studentList
+                .stream()
+                .map(mapper::studentToDto).toList();
+        System.out.println("actual = " + actual);
+
         assertThat(expectedStudentDTOS).isNotNull();
         assertThat(expectedStudentDTOS.size()).isEqualTo(3);
         assertThat(expectedStudentDTOS.get(0).getFirstName())

@@ -1,17 +1,14 @@
 package com.behnam.school.management.service;
 
-
-import com.behnam.school.management.dto.ProfessorDTO;
 import com.behnam.school.management.mapper.ProfessorMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Professor;
-import com.behnam.school.management.newDto.ProfessorDto;
+import com.behnam.school.management.dto.ProfessorDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.repository.ProfessorRepository;
 import com.behnam.school.management.model.Student;
 import com.behnam.school.management.repository.StudentRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

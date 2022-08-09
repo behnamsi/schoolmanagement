@@ -1,7 +1,7 @@
 package com.behnam.school.management.professor;
 
-import com.behnam.school.management.dto.ProfessorDTO;
-import com.behnam.school.management.newDto.ProfessorDto;
+
+import com.behnam.school.management.dto.ProfessorDto;
 import com.behnam.school.management.service.ProfessorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

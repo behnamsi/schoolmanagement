@@ -2,7 +2,7 @@ package com.behnam.school.management.mapper;
 
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Course;
-import com.behnam.school.management.newDto.CollegeDto;
+import com.behnam.school.management.dto.CollegeDto;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 

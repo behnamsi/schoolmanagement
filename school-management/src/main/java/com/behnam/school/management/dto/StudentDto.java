@@ -1,19 +1,25 @@
-package com.behnam.school.management.newDto;
+package com.behnam.school.management.dto;
 
+import com.behnam.school.management.validation.annotations.ValidName;
+import com.behnam.school.management.validation.annotations.ValidNationalId;
+import com.behnam.school.management.validation.annotations.ValidStudent;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
+@ValidStudent
 public class StudentDto {
-    @NotNull
-    @Size(min =3,max = 15)
+//    @ValidName
     private String firstName;
-    @NotNull
-    @Size(min = 3,max = 25)
+//    @ValidName
     private String lastName;
     private String collegeName;
-    @NotNull
+//    @ValidNationalId
     private long nationalId;
-    @NotNull
+//    @NotNull
+//    @Min(value = 1111111, message = "must be 7 digits ")
+//    @Digits(integer = 7, fraction = 0, message = "must be 7 digits")
     private long universityId;
 
     public StudentDto() {

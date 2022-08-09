@@ -1,8 +1,8 @@
 package com.behnam.school.management.controller;
 
 
-import com.behnam.school.management.dto.ProfessorDTO;
-import com.behnam.school.management.newDto.ProfessorDto;
+
+import com.behnam.school.management.dto.ProfessorDto;
 import com.behnam.school.management.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

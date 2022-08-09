@@ -25,7 +25,7 @@ public class Professor {
     @Column(nullable = false, length = 25)
     @NotEmpty
     @NotNull
-    @Size(min = 3, max = 15, message = "the length must be between 2 and 25")
+    @Size(min = 3, max = 25, message = "the length must be between 2 and 25")
     private String lastName;
     @Column(nullable = false, unique = true)
     @NotNull

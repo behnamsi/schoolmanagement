@@ -1,7 +1,7 @@
 package com.behnam.school.management.controller;
 
-import com.behnam.school.management.dto.CourseDTO;
-import com.behnam.school.management.newDto.CourseDto;
+
+import com.behnam.school.management.dto.CourseDto;
 import com.behnam.school.management.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

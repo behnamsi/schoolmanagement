@@ -1,7 +1,7 @@
 package com.behnam.school.management.controller;
 
-import com.behnam.school.management.dto.StudentDTO;
-import com.behnam.school.management.newDto.StudentDto;
+
+import com.behnam.school.management.dto.StudentDto;
 import com.behnam.school.management.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +39,7 @@ public class StudentController {
     }
 
     @GetMapping(path = "{studentUniId}")
-    public StudentDTO getStudent(
+    public StudentDto getStudent(
             @PathVariable("studentUniId") Long studentUniId
     ) {
         return service.getStudent(studentUniId);
@@ -64,7 +64,7 @@ public class StudentController {
     @PostMapping
     public void addStudent(
             @Valid @RequestBody StudentDto student,
-            @RequestParam @Min(1) Long collegeId
+            @RequestParam @Min(value = 1, message = "college id starts at 1") Long collegeId
     ) {
         service.addStudent(student, collegeId);
     }

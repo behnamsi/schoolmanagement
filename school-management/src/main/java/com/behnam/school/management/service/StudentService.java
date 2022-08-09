@@ -1,17 +1,15 @@
 package com.behnam.school.management.service;
 
-import com.behnam.school.management.dto.StudentDTO;
+
 import com.behnam.school.management.mapper.StudentMapper;
 import com.behnam.school.management.model.College;
 import com.behnam.school.management.model.Student;
-import com.behnam.school.management.newDto.StudentDto;
+import com.behnam.school.management.dto.StudentDto;
 import com.behnam.school.management.repository.CollegeRepository;
 import com.behnam.school.management.model.Course;
 import com.behnam.school.management.repository.CourseRepository;
 import com.behnam.school.management.model.Professor;
 import com.behnam.school.management.repository.StudentRepository;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -249,13 +246,14 @@ public class StudentService {
         return result;
     }
 
-    public StudentDTO getStudent(Long studentUniId) {
+    public StudentDto getStudent(Long studentUniId) {
         if (!repository.existsByUniversityId(studentUniId)) {
             throw new IllegalStateException("invalid uni id");
         }
         Student student = repository.findStudentByUniversityId(studentUniId);
-        StudentDTO studentDTO = new StudentDTO();
-        BeanUtils.copyProperties(student, studentDTO);
+        StudentDto studentDTO = new StudentDto();
+        StudentMapper mapper = new StudentMapper();
+        studentDTO = mapper.studentToDto(student);
         return studentDTO;
     }
 }
