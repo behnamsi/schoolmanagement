@@ -1,17 +1,20 @@
 package com.behnam.school.management.dto;
 
+import com.behnam.school.management.validation.annotations.ValidCourse;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@ValidCourse
 public class CourseDto {
-    @NotNull
-    @Size(min = 1, max = 20)
+//    @NotNull
+//    @Size(min = 1, max = 20)
     private String name;
-    @NotNull
-    @Min(1)
-    @Max(3)
+//    @NotNull
+//    @Min(1)
+//    @Max(3)
     private Integer unitNumber;
     private String professorOfCourse;
     private String collegeName;

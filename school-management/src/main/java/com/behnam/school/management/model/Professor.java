@@ -18,24 +18,24 @@ public class Professor {
     @Column(updatable = false)
     private Long professorId;
     @Column(nullable = false, length = 15)
-    @NotEmpty
-    @NotNull
-    @Size(min = 3, max = 15, message = "the length must be between 2 and 15")
+//    @NotEmpty
+//    @NotNull
+//    @Size(min = 3, max = 15, message = "the length must be between 2 and 15")
     private String firstName;
     @Column(nullable = false, length = 25)
-    @NotEmpty
-    @NotNull
-    @Size(min = 3, max = 25, message = "the length must be between 2 and 25")
+//    @NotEmpty
+//    @NotNull
+//    @Size(min = 3, max = 25, message = "the length must be between 2 and 25")
     private String lastName;
     @Column(nullable = false, unique = true)
-    @NotNull
-    @Min(value = 1111111,message = "must be 7 digits ")
-    @Digits(integer = 7, fraction = 0, message = "must be 7 digits")
+//    @NotNull
+//    @Min(value = 1111111,message = "must be 7 digits ")
+//    @Digits(integer = 7, fraction = 0, message = "must be 7 digits")
     private Long personalId;
     @Column(nullable = false, unique = true)
-    @NotNull
-    @Min(value = 1111111111,message = "must be 10 digits")
-    @Digits(integer = 10, fraction = 0, message = "must be 10 digits")
+//    @NotNull
+//    @Min(value = 1111111111,message = "must be 10 digits")
+//    @Digits(integer = 10, fraction = 0, message = "must be 10 digits")
     private Long nationalId;
 
 

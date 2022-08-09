@@ -18,9 +18,9 @@ public class College {
     @Column(updatable = false)
     private Long collegeId;
     @Column(nullable = false, length = 20, unique = true)
-    @NotEmpty
-    @NotNull
-    @Size(min = 1, max = 20)
+//    @NotEmpty
+//    @NotNull
+//    @Size(min = 1, max = 20)
     private String collegeName;
     @OneToMany(mappedBy = "studentCollege", cascade = CascadeType.MERGE, fetch = FetchType.LAZY,
             orphanRemoval = true)

@@ -17,13 +17,13 @@ public class Course {
     @Column(updatable = false)
     private Long courseId;
     @Column(nullable = false, length = 20, unique = true)
-    @NotEmpty
-    @NotNull
-    @Size(min = 1, max = 20)
+//    @NotEmpty
+//    @NotNull
+//    @Size(min = 1, max = 20)
     private String courseName;
     @Column(nullable = false)
-    @Min(1) @Max(3)
-    @NotNull
+//    @Min(1) @Max(3)
+//    @NotNull
     private Integer unitNumber;
 
 
