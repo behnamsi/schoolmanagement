@@ -1,9 +1,11 @@
 package com.behnam.school.management.controller;
 
 
-
 import com.behnam.school.management.dto.ProfessorDto;
 import com.behnam.school.management.service.ProfessorService;
+import com.behnam.school.management.validation.annotations.ValidName;
+import com.behnam.school.management.validation.annotations.ValidNationalId;
+import com.behnam.school.management.validation.annotations.ValidSevenDigits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,7 @@ public class ProfessorController {
     //get All Professors
     @GetMapping
     public List<ProfessorDto> getAllProfessors(
-            @RequestParam(required = false) @Min(1) Integer limit,
+            @RequestParam(required = false) @Min(value = 1) Integer limit,
             @RequestParam(required = false) @Min(1) Integer page
     ) {
         return service.getAllProfessors(page, limit);
@@ -68,7 +70,7 @@ public class ProfessorController {
     // get students of a course of professor
     @GetMapping(path = "{professorId}/courses/{courseName}/students")
     public List<String> getProfessorStudentsByCourse(
-            @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
+            @PathVariable("courseName") @ValidName String courseName,
             @PathVariable("professorId") @Min(1) Long professorId
     ) {
         return service.getProfessorStudentsByCourse(professorId, courseName);
@@ -76,7 +78,7 @@ public class ProfessorController {
 
     @GetMapping(path = "{professorId}/courses/{courseName}/students/averages")
     public List<String> getProfessorStudentsAverageByCourse(
-            @PathVariable("courseName") @NotEmpty @Size(min = 1, max = 20) String courseName,
+            @PathVariable("courseName") @ValidName String courseName,
             @PathVariable("professorId") @Min(1) Long professorId
     ) {
         return service.getProfessorStudentsAverageByCourse(professorId, courseName);
@@ -88,7 +90,7 @@ public class ProfessorController {
     @PostMapping
     public void addProfessor(
             @Valid @RequestBody ProfessorDto professorDto,
-            @RequestParam() @NotNull @Min(1) Long collegeId
+            @RequestParam() @Min(1) Long collegeId
     ) {
         service.addProfessor(professorDto, collegeId);
     }
@@ -103,10 +105,10 @@ public class ProfessorController {
     @PutMapping(path = "{profId}")
     public void updateProfessor(
             @PathVariable("profId") @Min(1) Long id,
-            @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 15) String first_name,
-            @RequestParam(required = false) @NotEmpty @Size(min = 3, max = 25) String last_name,
-            @RequestParam(required = false) @Min(1111111111) Long nationalId,
-            @RequestParam(required = false) @Min(1111111) Long personalId
+            @RequestParam(required = false) @ValidName String first_name,
+            @RequestParam(required = false) @ValidName String last_name,
+            @RequestParam(required = false) @ValidNationalId Long nationalId,
+            @RequestParam(required = false) @ValidSevenDigits Long personalId
     ) {
         service.updateProfessor(id, first_name, last_name, nationalId, personalId);
     }

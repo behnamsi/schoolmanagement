@@ -13,6 +13,6 @@ public class NameValidator implements ConstraintValidator<ValidName, String> {
 
     @Override
     public boolean isValid(String name, ConstraintValidatorContext constraintValidatorContext) {
-        return name.matches("^[a-zA-Z\\\\s]*$") && name.length() >= 3 && name.length() <= 15;
+        return name.matches("^[a-zA-Z\\\\s]*$") && name.length() >= 3 && name.length() <= 20;
     }
 }
