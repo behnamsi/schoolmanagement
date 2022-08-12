@@ -1,6 +1,6 @@
-package com.behnam.school.management.validation.annotations;
+package com.behnam.school.management.validation.annotations.course;
 
-import com.behnam.school.management.validation.validators.CourseValidator;
+import com.behnam.school.management.validation.validators.course.CourseValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = CourseValidator.class)
 public @interface ValidCourse {
     String message() default "a valid course must contains\n" +
-            "name with length of [3-20] just letters and unit number between 1-3";
+            "unique name with length of [3-20] just letters and unit number between 1-3";
 
     Class<?>[] groups() default {};
 

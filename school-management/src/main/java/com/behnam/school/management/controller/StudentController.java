@@ -3,9 +3,11 @@ package com.behnam.school.management.controller;
 
 import com.behnam.school.management.dto.StudentDto;
 import com.behnam.school.management.service.StudentService;
-import com.behnam.school.management.validation.annotations.ValidName;
-import com.behnam.school.management.validation.annotations.ValidNationalId;
-import com.behnam.school.management.validation.annotations.ValidSevenDigits;
+import com.behnam.school.management.validation.annotations.college.ValidCollegeId;
+import com.behnam.school.management.validation.annotations.generic.ValidName;
+import com.behnam.school.management.validation.annotations.generic.ValidNationalId;
+import com.behnam.school.management.validation.annotations.generic.ValidSevenDigits;
+import com.behnam.school.management.validation.annotations.student.ValidStudentUniversityId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 
@@ -43,7 +44,7 @@ public class StudentController {
 
     @GetMapping(path = "{studentUniId}")
     public StudentDto getStudent(
-            @PathVariable("studentUniId") Long studentUniId
+            @PathVariable("studentUniId") @ValidStudentUniversityId Long studentUniId
     ) {
         return service.getStudent(studentUniId);
     }
@@ -51,14 +52,14 @@ public class StudentController {
     //get student courses using university id
     @GetMapping(path = "{uniID}/courses")
     public List<String> getStudentCourses(
-            @PathVariable("uniID") @ValidSevenDigits Long uniID
+            @PathVariable("uniID") @ValidStudentUniversityId Long uniID
     ) {
         return service.getStudentCourses(uniID);
     }
 
     // get student average
     @GetMapping(path = "{uniID}/averages")
-    public Double getStudentAverage(@PathVariable("uniID") @ValidSevenDigits Long uniID) {
+    public Double getStudentAverage(@PathVariable("uniID") @ValidStudentUniversityId Long uniID) {
         return service.getStudentAverage(uniID);
     }
 
@@ -67,7 +68,7 @@ public class StudentController {
     @PostMapping
     public void addStudent(
             @Valid @RequestBody StudentDto student,
-            @RequestParam @Min(1) Long collegeId
+            @RequestParam @ValidCollegeId Long collegeId
     ) {
         service.addStudent(student, collegeId);
     }
@@ -82,7 +83,7 @@ public class StudentController {
 
     @DeleteMapping(path = "{uniId}")
     public void deleteStudentByUniId(
-            @PathVariable("uniId") @ValidSevenDigits Long uniId
+            @PathVariable("uniId") @ValidStudentUniversityId Long uniId
     ) {
 
         service.deleteStudentByUniId(uniId);
@@ -91,7 +92,7 @@ public class StudentController {
     // update with university id
     @PutMapping(path = "{uniId}")
     public void updateStudent(
-            @PathVariable("uniId") @ValidSevenDigits Long uniId,
+            @PathVariable("uniId") @ValidStudentUniversityId Long uniId,
             @RequestParam(required = false) @ValidName String first_name,
             @RequestParam(required = false) @ValidName String last_name,
             @RequestParam(required = false) @NotEmpty List<String> courses,
@@ -103,7 +104,7 @@ public class StudentController {
     // add course for student
     @PutMapping(path = "{uniId}/courses/{courseName}/scores")
     public void addScoreCourse(
-            @PathVariable("uniId") @ValidSevenDigits Long uniId,
+            @PathVariable("uniId") @ValidStudentUniversityId Long uniId,
             @PathVariable("courseName") @ValidName String courseName,
             @RequestParam @Min(0) @Max(20) Double score
     ) {
@@ -113,7 +114,7 @@ public class StudentController {
     // delete course for student
     @PutMapping(path = "{uniId}/courses/delete")
     public void deleteStudentCourse(
-            @PathVariable("uniId") @ValidSevenDigits Long uniId,
+            @PathVariable("uniId") @ValidStudentUniversityId Long uniId,
             @RequestParam @ValidName String courseName
     ) {
         service.deleteStudentCourse(uniId, courseName);

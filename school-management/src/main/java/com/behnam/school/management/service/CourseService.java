@@ -36,7 +36,7 @@ public class CourseService {
     }
 
     public List<CourseDto> getAllCourses(Integer page, Integer limit) {
-        CourseMapper mapper=new CourseMapper();
+        CourseMapper mapper = new CourseMapper();
         // limit and paging filters
         if (limit == null) limit = 3;
         if (page == null) page = 0;
@@ -110,5 +110,11 @@ public class CourseService {
             course.setProfessor(professor);
         }
 
+    }
+
+    public CourseDto getCourse(Long courseId) {
+        Course course = repository.findById(courseId).get();
+        CourseMapper mapper=new CourseMapper();
+        return mapper.courseToDto(course);
     }
 }

@@ -1,6 +1,6 @@
-package com.behnam.school.management.validation.annotations;
+package com.behnam.school.management.validation.annotations.student;
 
-import com.behnam.school.management.validation.validators.ProfessorValidator;
+import com.behnam.school.management.validation.validators.student.StudentValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,15 +11,13 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ProfessorValidator.class)
-public @interface ValidProfessor {
+@Constraint(validatedBy = StudentValidator.class)
+public @interface ValidStudent {
     String message() default """
-            a valid professor must contain\s
+            a valid student must contain\s
             first name and last name chars between 3-20 and contain just letters
             10 digits national id
-            7 personal id""";
-
+            7 university id""";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

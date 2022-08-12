@@ -1,6 +1,6 @@
-package com.behnam.school.management.validation.validators;
+package com.behnam.school.management.validation.validators.generic;
 
-import com.behnam.school.management.validation.annotations.ValidSevenDigits;
+import com.behnam.school.management.validation.annotations.generic.ValidSevenDigits;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

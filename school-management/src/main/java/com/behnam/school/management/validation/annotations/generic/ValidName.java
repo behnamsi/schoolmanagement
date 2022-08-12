@@ -1,6 +1,6 @@
-package com.behnam.school.management.validation.annotations;
+package com.behnam.school.management.validation.annotations.generic;
 
-import com.behnam.school.management.validation.validators.SevenDigitsValidator;
+import com.behnam.school.management.validation.validators.generic.NameValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = SevenDigitsValidator.class)
-public @interface ValidSevenDigits {
-    String message() default " must be 7 digits";
+@Constraint(validatedBy = {NameValidator.class})
+public @interface ValidName {
+    String message() default "name must contain only letters and size between 3-20";
 
     Class<?>[] groups() default {};
 

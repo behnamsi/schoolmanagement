@@ -229,4 +229,10 @@ public class ProfessorService {
         }
         return studentAverages;
     }
+
+    public ProfessorDto getProfessor(Long profId) {
+        Professor professor=repository.findById(profId).get();
+        ProfessorMapper mapper=new ProfessorMapper();
+        return mapper.professorToDto(professor);
+    }
 }

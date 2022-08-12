@@ -1,6 +1,6 @@
 package com.behnam.school.management.dto;
 
-import com.behnam.school.management.validation.annotations.ValidCollege;
+import com.behnam.school.management.validation.annotations.college.ValidCollege;
 
 import java.util.List;
 

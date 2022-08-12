@@ -1,7 +1,7 @@
-package com.behnam.school.management.validation.validators;
+package com.behnam.school.management.validation.validators.professor;
 
 import com.behnam.school.management.dto.ProfessorDto;
-import com.behnam.school.management.validation.annotations.ValidProfessor;
+import com.behnam.school.management.validation.annotations.professor.ValidProfessor;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

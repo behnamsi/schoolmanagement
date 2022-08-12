@@ -1,6 +1,6 @@
-package com.behnam.school.management.validation.annotations;
+package com.behnam.school.management.validation.annotations.college;
 
-import com.behnam.school.management.validation.validators.CollegeValidator;
+import com.behnam.school.management.validation.validators.college.CollegeValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = CollegeValidator.class)
 public @interface ValidCollege {
     String message() default "a valid college must contains\n" +
-            "name with length of [3-20] just letters";
+            "name with length of [3-20] just letters and must be unique";
 
     Class<?>[] groups() default {};
 

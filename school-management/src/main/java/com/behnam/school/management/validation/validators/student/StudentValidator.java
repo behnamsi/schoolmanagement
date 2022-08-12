@@ -1,7 +1,7 @@
-package com.behnam.school.management.validation.validators;
+package com.behnam.school.management.validation.validators.student;
 
 import com.behnam.school.management.dto.StudentDto;
-import com.behnam.school.management.validation.annotations.ValidStudent;
+import com.behnam.school.management.validation.annotations.student.ValidStudent;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

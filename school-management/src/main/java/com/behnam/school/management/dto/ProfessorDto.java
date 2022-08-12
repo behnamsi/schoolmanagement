@@ -1,11 +1,6 @@
 package com.behnam.school.management.dto;
 
-import com.behnam.school.management.validation.annotations.ValidProfessor;
-
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import com.behnam.school.management.validation.annotations.professor.ValidProfessor;
 
 @ValidProfessor
 public class ProfessorDto {

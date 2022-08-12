@@ -1,12 +1,6 @@
 package com.behnam.school.management.dto;
 
-import com.behnam.school.management.validation.annotations.ValidName;
-import com.behnam.school.management.validation.annotations.ValidNationalId;
-import com.behnam.school.management.validation.annotations.ValidStudent;
-
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import com.behnam.school.management.validation.annotations.student.ValidStudent;
 
 @ValidStudent
 public class StudentDto {
