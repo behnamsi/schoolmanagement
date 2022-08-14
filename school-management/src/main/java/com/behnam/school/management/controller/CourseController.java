@@ -2,12 +2,8 @@ package com.behnam.school.management.controller;
 
 
 import com.behnam.school.management.dto.CourseDto;
-import com.behnam.school.management.model.Course;
 import com.behnam.school.management.service.CourseService;
-import com.behnam.school.management.validation.annotations.course.UniqueCourseName;
-import com.behnam.school.management.validation.annotations.course.ValidCourseId;
 import com.behnam.school.management.validation.annotations.generic.ValidName;
-import com.behnam.school.management.validation.annotations.professor.ValidProfessorId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +33,7 @@ public class CourseController {
 
     @GetMapping(path = "{courseId}")
     public CourseDto getCourse(
-            @PathVariable("courseId") @ValidCourseId Long courseId
+            @PathVariable("courseId") @Min(1) Long courseId
     ) {
         return service.getCourse(courseId);
     }
@@ -59,10 +55,10 @@ public class CourseController {
 
     @PutMapping(path = "{courseId}")
     public void updateCourse(
-            @PathVariable("courseId") @ValidCourseId Long courseId,
-            @RequestParam(required = false) @UniqueCourseName @ValidName String courseName,
+            @PathVariable("courseId") @Min(1) Long courseId,
+            @RequestParam(required = false) @ValidName String courseName,
             @RequestParam(required = false) @Min(1) @Max(3) Integer unitNumber,
-            @RequestParam(required = false) @ValidProfessorId Long professorId
+            @RequestParam(required = false) Long professorId
     ) {
         service.updateCourse(courseId, courseName, unitNumber, professorId);
     }

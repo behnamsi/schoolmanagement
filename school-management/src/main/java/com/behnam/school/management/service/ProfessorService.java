@@ -231,8 +231,10 @@ public class ProfessorService {
     }
 
     public ProfessorDto getProfessor(Long profId) {
-        Professor professor=repository.findById(profId).get();
-        ProfessorMapper mapper=new ProfessorMapper();
+        Professor professor = repository.findById(profId).orElseThrow(
+                () -> new IllegalStateException("invalid professor id")
+        );
+        ProfessorMapper mapper = new ProfessorMapper();
         return mapper.professorToDto(professor);
     }
 }

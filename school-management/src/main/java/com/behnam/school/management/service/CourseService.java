@@ -113,8 +113,10 @@ public class CourseService {
     }
 
     public CourseDto getCourse(Long courseId) {
-        Course course = repository.findById(courseId).get();
-        CourseMapper mapper=new CourseMapper();
+        Course course = repository.findById(courseId).orElseThrow(
+                () -> new IllegalStateException("invalid course id")
+        );
+        CourseMapper mapper = new CourseMapper();
         return mapper.courseToDto(course);
     }
 }
